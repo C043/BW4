@@ -5,6 +5,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.transaction.TransactionalException;
 
+import java.util.UUID;
+
 public class MezziDAO {
     EntityManager em;
 
@@ -24,11 +26,11 @@ public class MezziDAO {
         }
     }
 
-    public Mezzo findById(long id) {
+    public Mezzo findById(UUID id) {
         return em.find(Mezzo.class, id);
     }
 
-    public void deleteById(long id) {
+    public void deleteById(UUID id) {
         Mezzo found = this.findById(id);
         if (found != null) {
             EntityTransaction transaction = em.getTransaction();
