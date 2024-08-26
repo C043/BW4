@@ -3,6 +3,8 @@ package Fragnito.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -15,6 +17,9 @@ public class Tessera {
     @OneToOne
     @JoinColumn(name = "utente_id", nullable = false, unique = true) //FK
     private Utente utente;
+
+    @OneToMany(mappedBy = "tessera")
+    private List<Timbrabile> biglietti = new ArrayList<>();
 
     private LocalDate dataScadenza;
 
@@ -46,5 +51,23 @@ public class Tessera {
 
     public void setDataScadenza(LocalDate dataScadenza) {
         this.dataScadenza = dataScadenza;
+    }
+
+    public List<Timbrabile> getBiglietti() {
+        return biglietti;
+    }
+
+    public void setBiglietti(List<Timbrabile> biglietti) {
+        this.biglietti = biglietti;
+    }
+
+    @Override
+    public String toString() {
+        return "Tessera{" +
+                "id=" + id +
+                ", utente=" + utente +
+                ", biglietti=" + biglietti +
+                ", dataScadenza=" + dataScadenza +
+                '}';
     }
 }

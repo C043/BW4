@@ -15,6 +15,9 @@ public abstract class Timbrabile {
     private UUID id;
 
     // Creare il many to one alle tessere e rifare i getter setter i toString e i constructor
+    @ManyToOne
+    @JoinColumn(name = "tessera_id")
+    private Tessera tessera;
 
     @Column(name = "data_emissione", nullable = false)
     private LocalDate dataEmissione;
@@ -29,6 +32,14 @@ public abstract class Timbrabile {
     public Timbrabile(LocalDate dataEmissione, Distributore distributore) {
         this.dataEmissione = dataEmissione;
         this.distributore = distributore;
+    }
+
+    public Tessera getTessera() {
+        return tessera;
+    }
+
+    public void setTessera(Tessera tessera) {
+        this.tessera = tessera;
     }
 
     public UUID getId() {
@@ -55,6 +66,7 @@ public abstract class Timbrabile {
     public String toString() {
         return "Timbrabile{" +
                 "id=" + id +
+                ", tessera=" + tessera.getUtente() +
                 ", dataEmissione=" + dataEmissione +
                 ", distributore=" + distributore +
                 '}';

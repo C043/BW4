@@ -3,6 +3,8 @@ package Fragnito.entities;
 import jakarta.persistence.*;
 
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -14,16 +16,18 @@ public class Tratta {
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private UUID id;
-    @Column(name = "partenza")
+
+    @Column(nullable = false)
     private String partenza;
 
-    @Column(name = "capolinea")
+    @Column(nullable = false)
     private String capolinea;
-    @Column(name = "tempo_previsto")
+
+    @Column(name = "tempo_previsto", nullable = false)
     private Time tempoPrevisto;
 
-    //onetomany dei viaggi
-
+    @OneToMany(mappedBy = "tratta")
+    private List<Mezzo> mezzi = new ArrayList<>();
 
     public Tratta() {
     }
@@ -32,6 +36,14 @@ public class Tratta {
         this.partenza = partenza;
         this.capolinea = capolinea;
         this.tempoPrevisto = tempoPrevisto;
+    }
+
+    public List<Mezzo> getMezzi() {
+        return mezzi;
+    }
+
+    public void setMezzi(List<Mezzo> mezzi) {
+        this.mezzi = mezzi;
     }
 
     public UUID getId() {

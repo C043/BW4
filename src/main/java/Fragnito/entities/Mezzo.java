@@ -31,6 +31,10 @@ public class Mezzo {
     @OneToMany(mappedBy = "mezzo")
     private List<Manutenzione> manutenzioni = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "tratta_id")
+    private Tratta tratta;
+
     public Mezzo() {
     }
 
