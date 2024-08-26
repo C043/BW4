@@ -1,8 +1,6 @@
 package Fragnito.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -11,7 +9,10 @@ import java.time.LocalDate;
 public class Biglietto extends Timbrabile {
     @Column(name = "data_vidimazione")
     private LocalDate dataVidimazione;
-    // Aggiungere relazione a viaggi e fare getter e setter e rifare toString() e constructor
+
+    @ManyToOne
+    @JoinColumn(name = "viaggio_id")
+    private Viaggio viaggio;
 
     public Biglietto() {
     }
@@ -19,6 +20,14 @@ public class Biglietto extends Timbrabile {
     public Biglietto(LocalDate dataEmissione, Distributore distributore, LocalDate dataVidimazione) {
         super(dataEmissione, distributore);
         this.dataVidimazione = dataVidimazione;
+    }
+
+    public Viaggio getViaggio() {
+        return viaggio;
+    }
+
+    public void setViaggio(Viaggio viaggio) {
+        this.viaggio = viaggio;
     }
 
     public LocalDate getDataVidimazione() {
@@ -33,6 +42,7 @@ public class Biglietto extends Timbrabile {
     public String toString() {
         return "Biglietto{" +
                 "dataVidimazione=" + dataVidimazione +
+                ", viaggio=" + viaggio +
                 "} " + super.toString();
     }
 }
