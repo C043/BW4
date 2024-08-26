@@ -17,5 +17,7 @@ public abstract class Timbrabile {
     @Column(name = "data_emissione", nullable = false)
     private LocalDate dataEmissione;
 
-    @Column()
+    @ManyToOne
+    @JoinColumn(name = "distributore_id")
+    private Distributore distributore;
 }
