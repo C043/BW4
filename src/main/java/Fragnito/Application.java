@@ -12,7 +12,7 @@ public class Application {
         EntityManager em = emf.createEntityManager();
 
         DistributoriDAO dd = new DistributoriDAO(em);
-        
+
         em.close();
         emf.close();
     }
