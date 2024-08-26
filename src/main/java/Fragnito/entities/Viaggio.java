@@ -25,7 +25,8 @@ public class Viaggio {
     public Viaggio() {
     }
 
-    public Viaggio(LocalDate giorno, Integer tempoEffettivo) {
+    public Viaggio(Mezzo mezzo, LocalDate giorno, Integer tempoEffettivo) {
+        this.mezzo = mezzo;
         this.giorno = giorno;
         this.tempoEffettivo = tempoEffettivo;
     }
