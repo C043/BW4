@@ -25,7 +25,6 @@ public class MezziDAO {
     }
 
     public Mezzo findById(long id) {
-        Mezzo found = 
         return em.find(Mezzo.class, id);
     }
 

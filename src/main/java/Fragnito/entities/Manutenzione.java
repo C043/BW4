@@ -9,20 +9,25 @@ import java.util.UUID;
 @Table(name = "manutenzioni")
 public class Manutenzione {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue
     private UUID id;
-    @Column(name = "data_inizio")
+
+    @Column(name = "data_inizio", nullable = false)
     private LocalDate dataInizio;
+
     @Column(name = "data_fine")
     private LocalDate dataFine;
+
     private String motivo;
 
 
-    //molti veicoli possono essere in manutenzione
+    //molti mezzi possono essere in manutenzione
     @ManyToOne
-    @JoinColumn(name = "veicolo_id")
+    @JoinColumn(name = "mezzo_id")
     private Mezzo mezzo;
+
+    public Manutenzione() {
+    }
 
     public Manutenzione(LocalDate dataFine, String motivo, Mezzo mezzo) {
         this.dataInizio = LocalDate.now();
@@ -39,36 +44,35 @@ public class Manutenzione {
         return id;
     }
 
-
-    public LocalDate getStartDate() {
+    public LocalDate getDataInizio() {
         return dataInizio;
     }
 
-    public void setStartDate(LocalDate dataInizio) {
-        this.dataInizio = Manutenzione.this.dataInizio;
+    public void setDataInizio(LocalDate dataInizio) {
+        this.dataInizio = dataInizio;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDate getDataFine() {
         return dataFine;
     }
 
-    public void setEndDate(LocalDate dataFine) {
-        this.dataFine = Manutenzione.this.dataFine;
+    public void setDataFine(LocalDate dataFine) {
+        this.dataFine = dataFine;
     }
 
-    public String getDescription() {
+    public String getMotivo() {
         return motivo;
     }
 
-    public void setDescription(String motivo) {
+    public void setMotivo(String motivo) {
         this.motivo = motivo;
     }
 
-    public Mezzo getVeicolo() {
+    public Mezzo getMezzo() {
         return mezzo;
     }
 
-    public void setVeicolo(Mezzo mezzo) {
+    public void setMezzo(Mezzo mezzo) {
         this.mezzo = mezzo;
     }
 

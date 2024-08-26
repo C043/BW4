@@ -1,10 +1,14 @@
 package Fragnito.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Entity
 @Table(name = "utenti")
 public class Utente {
 
@@ -15,10 +19,6 @@ public class Utente {
     private String nome;
     private String cognome;
     private LocalDate dataNascita;
-
-    @Embedded
-    @OneToOne(mappedBy = "tessera")
-    private Tessera tessera;
 
     public Utente() {
     }

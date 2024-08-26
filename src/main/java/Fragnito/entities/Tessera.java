@@ -8,13 +8,12 @@ import java.util.UUID;
 @Entity
 @Table(name = "tessere")
 public class Tessera {
-
     @Id
     @GeneratedValue
     private UUID id;
 
     @OneToOne
-    @JoinColumn(name = "utente_id") //FK
+    @JoinColumn(name = "utente_id", nullable = false, unique = true) //FK
     private Utente utente;
 
     private LocalDate dataScadenza;

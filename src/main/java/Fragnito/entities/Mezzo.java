@@ -5,27 +5,34 @@ import Fragnito.enumClass.StatoMezzo;
 import Fragnito.enumClass.TipoMezzo;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "veicoli")
+@Table(name = "mezzi")
 public class Mezzo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue
     private UUID id;
-    @Column(name = "tipo_veicolo")
-    private int capacita;
+
+    @Column(name = "tipo_mezzo")
     @Enumerated(EnumType.STRING)
     private TipoMezzo tipoMezzo;
-    @Column(name = "stato_veicolo")
+
+    @Column(nullable = false)
+    private int capacita;
+
+    @Column(name = "stato_mezzo", nullable = false)
     @Enumerated(EnumType.STRING)
     private StatoMezzo statoMezzo;
 
     //un veicolo può essere stato in manutenzione più volte
-    @OneToMany(mappedBy = "veicolo")
-    private List<Manutenzione> manutenzioni;
+    @OneToMany(mappedBy = "mezzo")
+    private List<Manutenzione> manutenzioni = new ArrayList<>();
+
+    public Mezzo() {
+    }
 
     public Mezzo(TipoMezzo tipoMezzo, int capacita, StatoMezzo statoMezzo) {
         this.tipoMezzo = tipoMezzo;
@@ -48,19 +55,19 @@ public class Mezzo {
         this.capacita = capacita;
     }
 
-    public TipoMezzo getTipoVeicolo() {
+    public TipoMezzo getTipoMezzo() {
         return tipoMezzo;
     }
 
-    public void setTipoVeicolo(TipoMezzo tipoMezzo) {
+    public void setTipoMezzo(TipoMezzo tipoMezzo) {
         this.tipoMezzo = tipoMezzo;
     }
 
-    public StatoMezzo getStatoVeicolo() {
+    public StatoMezzo getStatoMezzo() {
         return statoMezzo;
     }
 
-    public void setStatoVeicolo(StatoMezzo statoMezzo) {
+    public void setStatoMezzo(StatoMezzo statoMezzo) {
         this.statoMezzo = statoMezzo;
     }
 
@@ -74,11 +81,11 @@ public class Mezzo {
 
     @Override
     public String toString() {
-        return "Veicolo{" +
+        return "Mezzo {" +
                 "id=" + id +
-                ", tipoVeicolo=" + tipoMezzo +
+                ", tipoMezzo=" + tipoMezzo +
                 ", capacita=" + capacita +
-                ", statoVeicolo=" + statoMezzo +
+                ", statoMezzo=" + statoMezzo +
                 ", manutenzioni=" + manutenzioni +
                 '}';
     }
