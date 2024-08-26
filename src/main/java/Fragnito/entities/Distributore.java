@@ -18,6 +18,14 @@ public class Distributore {
     @Enumerated(EnumType.STRING)
     private StatoDistributore stato;
 
+    public Distributore() {
+    }
+
+    public Distributore(TipoDistributore tipo, StatoDistributore stato) {
+        this.tipo = tipo;
+        this.stato = stato;
+    }
+
     public UUID getId() {
         return id;
     }
