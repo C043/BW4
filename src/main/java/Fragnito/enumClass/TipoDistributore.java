@@ -1,4 +1,4 @@
-package Fragnito.entities;
+package Fragnito.enumClass;
 
 import java.util.List;
 import java.util.Random;

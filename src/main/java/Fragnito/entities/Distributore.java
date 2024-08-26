@@ -1,5 +1,7 @@
 package Fragnito.entities;
 
+import Fragnito.enumClass.StatoDistributore;
+import Fragnito.enumClass.TipoDistributore;
 import jakarta.persistence.*;
 
 import java.util.UUID;

@@ -11,7 +11,10 @@ public class Viaggio {
     @Id
     @GeneratedValue
     private UUID id;
-    // Aggiungere mezzo
+
+    @ManyToOne
+    @JoinColumn(name = "mezzo_id")
+    private Mezzo mezzo;
 
     @Column(nullable = false)
     private LocalDate giorno;
@@ -25,6 +28,14 @@ public class Viaggio {
     public Viaggio(LocalDate giorno, Integer tempoEffettivo) {
         this.giorno = giorno;
         this.tempoEffettivo = tempoEffettivo;
+    }
+
+    public Mezzo getMezzo() {
+        return mezzo;
+    }
+
+    public void setMezzo(Mezzo mezzo) {
+        this.mezzo = mezzo;
     }
 
     public UUID getId() {
@@ -51,6 +62,7 @@ public class Viaggio {
     public String toString() {
         return "Viaggio{" +
                 "id=" + id +
+                ", mezzo=" + mezzo +
                 ", giorno=" + giorno +
                 ", tempoEffettivo=" + tempoEffettivo +
                 '}';

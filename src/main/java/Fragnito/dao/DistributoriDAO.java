@@ -1,8 +1,8 @@
 package Fragnito.dao;
 
 import Fragnito.entities.Distributore;
-import Fragnito.entities.StatoDistributore;
-import Fragnito.entities.TipoDistributore;
+import Fragnito.enumClass.StatoDistributore;
+import Fragnito.enumClass.TipoDistributore;
 import Fragnito.exceptions.NotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;

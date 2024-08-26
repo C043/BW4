@@ -1,5 +1,6 @@
 package Fragnito.entities;
 
+import Fragnito.enumClass.PeriodoAbbonamento;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
