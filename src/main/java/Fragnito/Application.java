@@ -26,8 +26,6 @@ public class Application {
         BigliettiDAO bd = new BigliettiDAO(em);
         ViaggiDAO vd = new ViaggiDAO(em);
 
-        System.out.println(bd.getAbbonamentoById(UUID.fromString("2e2e7299-f4a8-49b7-83ff-7e6b15f07c64")));
-
 //        md.save(new Mezzo(TipoMezzo.TRAM, trd.findById(UUID.fromString("09919180-db45-41ef-91ec-94971fe3e0a0"))));
 
         // rinnovo tessere con id tessera -> da sistemare
@@ -50,6 +48,10 @@ public class Application {
 //        } else {
 //            System.out.println("Tessera valida!");
 //        }
+    /*    vd.save(new Viaggio(md.findById(UUID.fromString("80282f3a-4204-4529-ac4c-ee09e1040215")), LocalDate.now(), 130));
+        vd.save(new Viaggio(md.findById(UUID.fromString("80282f3a-4204-4529-ac4c-ee09e1040215")), LocalDate.now(), 150));
+        vd.save(new Viaggio(md.findById(UUID.fromString("80282f3a-4204-4529-ac4c-ee09e1040215")), LocalDate.now(), 90));*/
+        System.out.println(vd.contaViaggiPerMezzo(UUID.fromString("80282f3a-4204-4529-ac4c-ee09e1040215")));
 
         em.close();
         emf.close();

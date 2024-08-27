@@ -37,21 +37,16 @@ public class ViaggiDAO {
         System.out.println("Viaggio " + found.getId() + " eliminato con successo!");
     }
 
-    /*public long contaViaggiPerMezzo(UUID mezzoId) {
+    public Long contaViaggiPerMezzo(UUID mezzoId) {
         return em.createQuery("SELECT COUNT(v) FROM Viaggio v WHERE v.mezzo.id = :mezzoId", Long.class)
                 .setParameter("mezzoId", mezzoId)
                 .getSingleResult();
     }
 
-    public double calcolaTempoMedio(UUID trattaId) {
-        Query query = em.createQuery("SELECT AVG(v.tempoEffettivo) FROM Viaggio v WHERE v.mezzo.tratta.id = :trattaId");
-        query.setParameter("trattaId", trattaId);
-        Double risultato = (Double) query.getSingleResult();
-        if (risultato == null) {
-            System.out.println("Nessun viaggio trovato per la tratta con ID " + trattaId);
-            return 0;
-        }
-        return risultato;
-    }*/
-
+    public double calcolaTempoMedio(UUID mezzoId, UUID trattaId) {
+        return em.createQuery("SELECT AVG(v.tempoEffettivo) FROM Viaggio v WHERE v.mezzo.id = :mezzoId AND v.mezzo.tratta.id = :trattaId", Double.class)
+                .setParameter("trattaId", trattaId)
+                .setParameter("mezzoId", mezzoId)
+                .getSingleResult();
+    }
 }

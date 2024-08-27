@@ -62,8 +62,11 @@ public class BigliettiDAO {
         return ((Number) em.createQuery("SELECT COUNT(b) FROM Biglietto b WHERE b.viaggio.mezzo.id = :mezzoId").setParameter("mezzoId", mezzoId).getSingleResult()).intValue();
     }
 
-    public Number contaVidimazioniRangeTempo(LocalDate start, LocalDate end) {
-        return ((Number) em.createQuery("SELECT COUNT(b) FROM Biglietto b WHERE b.dataVidimazione BETWEEN :startDate AND :endDate").setParameter("startDate", start).setParameter("endDate", end).getSingleResult()).intValue();
+    public Integer contaVidimazioniRangeTempo(LocalDate start, LocalDate end) {
+        return em.createQuery("SELECT COUNT(b) FROM Biglietto b WHERE b.dataVidimazione BETWEEN :startDate AND :endDate", Integer.class)
+                .setParameter("startDate", start)
+                .setParameter("endDate", end)
+                .getSingleResult();
     }
 
     public Number contaBigliettiTotali() {
