@@ -51,4 +51,14 @@ public class DistributoriDAO {
         transaction.commit();
         System.out.println("Distributore eliminato con successo!");
     }
+
+    public void updateStatoDistributore(UUID id, StatoDistributore nuovoStato) {
+        Distributore distributore = getDistributoreById(id);
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        distributore.setStato(nuovoStato);
+        em.merge(distributore);
+        transaction.commit();
+        System.out.println("Stato del distributore aggiornato con successo!");
+    }
 }
