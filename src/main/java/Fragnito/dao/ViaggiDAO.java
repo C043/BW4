@@ -4,6 +4,7 @@ import Fragnito.entities.Viaggio;
 import Fragnito.exceptions.NotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Query;
 
 import java.util.UUID;
 
@@ -37,5 +38,21 @@ public class ViaggiDAO {
         System.out.println("Viaggio " + found.getId() + " eliminato con successo!");
     }
 
+    public long contaViaggiPerMezzo(UUID mezzoId) {
+        return em.createQuery("SELECT COUNT(v) FROM Viaggio v WHERE v.mezzo.id = :mezzoId", Long.class)
+                .setParameter("mezzoId", mezzoId)
+                .getSingleResult();
+    }
+
+    public double calcolaTempoMedio(UUID trattaId) {
+        Query query = em.createQuery("SELECT AVG(v.tempoEffettivo) FROM Viaggio v WHERE v.mezzo.tratta.id = :trattaId");
+        query.setParameter("trattaId", trattaId);
+        Double risultato = (Double) query.getSingleResult();
+        if (risultato == null) {
+            System.out.println("Nessun viaggio trovato per la tratta con ID " + trattaId);
+            return 0;
+        }
+        return risultato;
+    }
 
 }
