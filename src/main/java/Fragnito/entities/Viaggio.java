@@ -63,7 +63,7 @@ public class Viaggio {
     public String toString() {
         return "Viaggio{" +
                 "id=" + id +
-                ", mezzo=" + mezzo +
+                ", mezzo=" + mezzo.getId() +
                 ", giorno=" + giorno +
                 ", tempoEffettivo=" + tempoEffettivo +
                 '}';

@@ -1,5 +1,6 @@
 package Fragnito.entities;
 
+import Fragnito.enumClass.StatoMezzo;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -11,6 +12,10 @@ public class Manutenzione {
     @Id
     @GeneratedValue
     private UUID id;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private StatoMezzo stato;
 
     @Column(name = "data_inizio", nullable = false)
     private LocalDate dataInizio;
@@ -29,16 +34,19 @@ public class Manutenzione {
     public Manutenzione() {
     }
 
-    public Manutenzione(LocalDate dataFine, String motivo, Mezzo mezzo) {
+    public Manutenzione(StatoMezzo stato, String motivo, Mezzo mezzo) {
+        this.stato = stato;
         this.dataInizio = LocalDate.now();
-        this.dataFine = dataFine;
         this.motivo = motivo;
         this.mezzo = mezzo;
     }
 
-
     //GETTER E SETTER
 
+
+    public StatoMezzo getStato() {
+        return stato;
+    }
 
     public UUID getId() {
         return id;

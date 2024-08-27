@@ -2,7 +2,6 @@ package Fragnito.entities;
 
 import jakarta.persistence.*;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -24,7 +23,7 @@ public class Tratta {
     private String capolinea;
 
     @Column(name = "tempo_previsto", nullable = false)
-    private Time tempoPrevisto;
+    private int tempoPrevisto;
 
     @OneToMany(mappedBy = "tratta")
     private List<Mezzo> mezzi = new ArrayList<>();
@@ -32,7 +31,7 @@ public class Tratta {
     public Tratta() {
     }
 
-    public Tratta(String partenza, String capolinea, Time tempoPrevisto) {
+    public Tratta(String partenza, String capolinea, int tempoPrevisto) {
         this.partenza = partenza;
         this.capolinea = capolinea;
         this.tempoPrevisto = tempoPrevisto;
@@ -66,11 +65,11 @@ public class Tratta {
         this.capolinea = capolinea;
     }
 
-    public Time getTempoPrevisto() {
+    public int getTempoPrevisto() {
         return tempoPrevisto;
     }
 
-    public void setTempoPrevisto(Time tempoPrevisto) {
+    public void setTempoPrevisto(int tempoPrevisto) {
         this.tempoPrevisto = tempoPrevisto;
     }
 

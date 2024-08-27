@@ -1,8 +1,8 @@
 package Fragnito;
 
-import Fragnito.dao.DistributoriDAO;
-import Fragnito.dao.TesseraDAO;
-import Fragnito.dao.UtenteDAO;
+import Fragnito.dao.*;
+import Fragnito.entities.Mezzo;
+import Fragnito.enumClass.TipoMezzo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -18,9 +18,12 @@ public class Application {
         DistributoriDAO dd = new DistributoriDAO(em);
         UtenteDAO ud = new UtenteDAO(em);
         TesseraDAO td = new TesseraDAO(em);
+        MezziDAO md = new MezziDAO(em);
+        TrattaDAO trd = new TrattaDAO(em);
+        ManutenzioneDAO mand = new ManutenzioneDAO(em);
 
-        td.save(UUID.fromString("cbe2b2e5-1e20-4039-91c1-48bfd01b3739"));
-        
+        md.save(new Mezzo(TipoMezzo.TRAM, trd.findById(UUID.fromString("09919180-db45-41ef-91ec-94971fe3e0a0"))));
+
         em.close();
         emf.close();
     }

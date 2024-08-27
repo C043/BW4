@@ -32,16 +32,23 @@ public class Mezzo {
     private List<Manutenzione> manutenzioni = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "tratta_id")
+    @JoinColumn(name = "tratta_id", nullable = false)
     private Tratta tratta;
+
+    @OneToMany(mappedBy = "mezzo")
+    private List<Viaggio> viaggi = new ArrayList<>();
 
     public Mezzo() {
     }
 
-    public Mezzo(TipoMezzo tipoMezzo, int capacita, StatoMezzo statoMezzo) {
+    public Mezzo(TipoMezzo tipoMezzo, Tratta tratta) {
         this.tipoMezzo = tipoMezzo;
-        this.capacita = capacita;
-        this.statoMezzo = statoMezzo;
+        switch (tipoMezzo) {
+            case BUS -> this.capacita = 30;
+            case TRAM -> this.capacita = 50;
+        }
+        this.statoMezzo = StatoMezzo.IN_SERVIZIO;
+        this.tratta = tratta;
     }
 
     //GETTER E SETTER
