@@ -57,4 +57,8 @@ public class BigliettiDAO {
     public Number contaVidimazioniRangeTempo(LocalDate start, LocalDate end) {
         return ((Number) em.createQuery("SELECT COUNT(b) FROM Biglietto b WHERE b.dataVidimazione BETWEEN :startDate AND :endDate").setParameter("startDate", start).setParameter("endDate", end).getSingleResult()).intValue();
     }
+
+    public Number contaBigliettiTotali() {
+        return ((Number) em.createQuery("SELECT COUNT(b) FROM Timbrabile b").getSingleResult()).intValue();
+    }
 }

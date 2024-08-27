@@ -5,7 +5,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 public class Application {
@@ -25,7 +24,7 @@ public class Application {
 
         bd.vidimaBiglietto(UUID.fromString("9e3fbd03-a0ad-4eda-82a7-8a457683994c"), vd.getViaggioById(UUID.fromString("9be8e175-f366-4d26-843d-3da30adb409f")));
 
-        System.out.println(bd.contaVidimazioniRangeTempo(LocalDate.now().plusDays(1), LocalDate.now().plusDays(1)));
+        System.out.println(bd.contaBigliettiTotali());
 
         em.close();
         emf.close();
