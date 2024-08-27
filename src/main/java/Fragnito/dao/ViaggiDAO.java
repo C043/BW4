@@ -36,4 +36,6 @@ public class ViaggiDAO {
         transaction.commit();
         System.out.println("Viaggio " + found.getId() + " eliminato con successo!");
     }
+
+
 }

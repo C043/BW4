@@ -1,11 +1,15 @@
 package Fragnito;
 
 import Fragnito.dao.*;
+import Fragnito.entities.Mezzo;
+import Fragnito.entities.Tratta;
+import Fragnito.entities.Viaggio;
+import Fragnito.enumClass.TipoMezzo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-import java.util.UUID;
+import java.time.LocalDate;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("BW4-Team-5");
@@ -21,8 +25,26 @@ public class Application {
         ManutenzioneDAO mand = new ManutenzioneDAO(em);
         BigliettiDAO bd = new BigliettiDAO(em);
         ViaggiDAO vd = new ViaggiDAO(em);
-        
-        bd.vidimaBiglietto(UUID.fromString("a798badf-3f10-45a7-b52c-b72549d14fef"), vd.getViaggioById(UUID.fromString("9be8e175-f366-4d26-843d-3da30adb409f")));
+
+
+        Tratta nuovaTratta = new Tratta("Porta Venezia", "Piazza SanBabila", 46);
+        trd.save(nuovaTratta);
+
+
+        Mezzo nuovoMezzo = new Mezzo(TipoMezzo.BUS, nuovaTratta);
+        md.save(nuovoMezzo);
+
+
+        LocalDate oggi = LocalDate.now();
+        for (int i = 1; i <= 3; i++) {
+            Viaggio viaggio = new Viaggio(nuovoMezzo, oggi.plusDays(i), 50 + i);
+            vd.save(viaggio);
+            md.incrementaNumeroGiri(nuovoMezzo.getId());
+            md.aggiornaMediaTempoEffettivo(nuovoMezzo.getId(), viaggio.getTempoEffettivo());
+        }
+        Mezzo mezzoAggiornato = md.findById(nuovoMezzo.getId());
+        System.out.println("Numero di giri effettuati dal mezzo: " + mezzoAggiornato.getNumeroGiri());
+        System.out.println("Media del tempo effettivo per il mezzo: " + mezzoAggiornato.getMediaTempoEffettivo());
 
         em.close();
         emf.close();
