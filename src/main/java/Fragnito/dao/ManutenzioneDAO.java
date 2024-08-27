@@ -27,7 +27,13 @@ public class ManutenzioneDAO {
     }
 
     public Manutenzione findById(UUID id) {
-        return em.find(Manutenzione.class, id);
+        Manutenzione found = em.find(Manutenzione.class, id);
+        if (found != null) {
+            System.out.println("Manutenzione n. " + id + " trovata.");
+        } else {
+            System.out.println("Manutenzione n. " + id + " non trovata.");
+        }
+        return found;
     }
 
     public void deleteById(UUID id) {

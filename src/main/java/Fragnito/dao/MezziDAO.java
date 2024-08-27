@@ -27,7 +27,13 @@ public class MezziDAO {
     }
 
     public Mezzo findById(UUID id) {
-        return em.find(Mezzo.class, id);
+        Mezzo found = em.find(Mezzo.class, id);
+        if (found != null) {
+            System.out.println("Veicolo di trasporto n. " + id + " trovato.");
+        } else {
+            System.out.println("Veicolo di trasporto n. " + id + " non trovato.");
+        }
+        return found;
     }
 
     public void deleteById(UUID id) {
