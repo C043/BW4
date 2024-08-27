@@ -21,8 +21,10 @@ public class Application {
         ManutenzioneDAO mand = new ManutenzioneDAO(em);
         BigliettiDAO bd = new BigliettiDAO(em);
         ViaggiDAO vd = new ViaggiDAO(em);
-        
-        bd.vidimaBiglietto(UUID.fromString("a798badf-3f10-45a7-b52c-b72549d14fef"), vd.getViaggioById(UUID.fromString("9be8e175-f366-4d26-843d-3da30adb409f")));
+
+        bd.vidimaBiglietto(UUID.fromString("9e3fbd03-a0ad-4eda-82a7-8a457683994c"), vd.getViaggioById(UUID.fromString("9be8e175-f366-4d26-843d-3da30adb409f")));
+
+        System.out.println(bd.contaVidimazioniSuMezzo(UUID.fromString("80282f3a-4204-4529-ac4c-ee09e1040215")));
 
         em.close();
         emf.close();

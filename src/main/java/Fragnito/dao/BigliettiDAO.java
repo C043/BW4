@@ -49,4 +49,8 @@ public class BigliettiDAO {
         if (numModifiche < 1) System.out.println("Biglietto non valido!");
         else System.out.println("Biglietto vidimato con successo!");
     }
+
+    public Number contaVidimazioniSuMezzo(UUID mezzoId) {
+        return ((Number) em.createQuery("SELECT COUNT(b) FROM Biglietto b WHERE b.viaggio.mezzo.id = :mezzoId").setParameter("mezzoId", mezzoId).getSingleResult()).intValue();
+    }
 }
