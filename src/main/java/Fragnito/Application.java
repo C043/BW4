@@ -25,6 +25,32 @@ public class Application {
         BigliettiDAO bd = new BigliettiDAO(em);
         ViaggiDAO vd = new ViaggiDAO(em);
 
+//        md.save(new Mezzo(TipoMezzo.TRAM, trd.findById(UUID.fromString("09919180-db45-41ef-91ec-94971fe3e0a0"))));
+
+        ud.generaUtenti(5);
+
+        // rinnovo tessere con id tessera -> da sistemare
+//        System.out.print("Inserisci l'ID della tessera da vidimare: ");
+//        String tesseraIdInput = scanner.nextLine().trim();
+//
+//        Tessera tesseraDaControllare = td.findById(UUID.fromString(tesseraIdInput));
+//
+//        if (tesseraDaControllare.getDataScadenza().isBefore(LocalDate.now())) {
+//            //è scaduta chiedere all'utente cosa vuole fare
+//
+//            System.out.println("Tessera scaduta, rinnovare? (S/N)");
+//            String res = scanner.nextLine();
+//
+//            if (res.equalsIgnoreCase("S")) {
+//                //chiamare DAO per rinnovo tessera
+//                tesseraDaControllare.setDataScadenza(tesseraDaControllare.getDataScadenza().plusYears(1));
+//                td.rinnovaTessera(tesseraDaControllare);
+//            }
+//        } else {
+//            System.out.println("Tessera valida!");
+//        }
+
+
         em.close();
         emf.close();
     }
