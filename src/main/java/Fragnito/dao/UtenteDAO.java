@@ -26,7 +26,7 @@ public class UtenteDAO {
         for (int i = 0; i < n; i++) {
             Date date = faker.date().birthday(1, 20);
             LocalDate randomLocalDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            Utente newUtente = new Utente(UUID.randomUUID(), faker.name().firstName(), faker.name().lastName(), randomLocalDate);
+            Utente newUtente = new Utente(faker.name().firstName(), faker.name().lastName(), randomLocalDate);
 
             EntityTransaction transaction = em.getTransaction();
             transaction.begin();
@@ -36,12 +36,6 @@ public class UtenteDAO {
         }
 
 
-    }
-
-    public Utente getUtenteById(UUID id) {
-        Utente found = em.find(Utente.class, id);
-        if (found == null) throw new NotFoundException(id);
-        return found;
     }
 
     public Utente findById(UUID id) {
@@ -56,7 +50,7 @@ public class UtenteDAO {
         transaction.begin();
         em.remove(found);
         transaction.commit();
-        System.out.println("L'uente \"" + found.getNome() + found.getCognome() + "\" è stato eliminato con successo!");
+        System.out.println("L'utente " + found.getNome() + " " + found.getCognome() + " è stato eliminato con successo!");
     }
 
 }

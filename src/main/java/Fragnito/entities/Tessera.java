@@ -21,15 +21,19 @@ public class Tessera {
     @OneToMany(mappedBy = "tessera")
     private List<Timbrabile> biglietti = new ArrayList<>();
 
+    @Column(name = "data_emissione", nullable = false)
+    private LocalDate dataEmissione;
+
+    @Column(name = "data_scadenza", nullable = false)
     private LocalDate dataScadenza;
 
     public Tessera() {
     }
 
-    public Tessera(UUID id, Utente utente, LocalDate dataScadenza) {
-        this.id = id;
+    public Tessera(Utente utente, LocalDate dataEmissione) {
         this.utente = utente;
-        this.dataScadenza = dataScadenza;
+        this.dataEmissione = dataEmissione;
+        this.dataScadenza = dataEmissione.minusMonths(12);
     }
 
     public UUID getId() {

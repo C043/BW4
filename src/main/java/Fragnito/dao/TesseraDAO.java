@@ -1,10 +1,12 @@
 package Fragnito.dao;
 
 import Fragnito.entities.Tessera;
+import Fragnito.entities.Utente;
 import Fragnito.exceptions.NotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class TesseraDAO {
@@ -15,12 +17,19 @@ public class TesseraDAO {
         this.em = em;
     }
 
-    public void save(Tessera tessera) {
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
-        em.persist(tessera);
-        transaction.commit();
-        System.out.println("La tessera \"" + tessera.getId() + " appartenente a " + tessera.getUtente() + "\" è stata salvata con successo!");
+    public void save(UUID id) {
+        try {
+            EntityTransaction transaction = em.getTransaction();
+            transaction.begin();
+            UtenteDAO ud = new UtenteDAO(em);
+            Utente tesseraOwner = ud.findById(id);
+            Tessera tessera = new Tessera(tesseraOwner, LocalDate.now());
+            em.persist(tessera);
+            transaction.commit();
+            System.out.println("La tessera " + tessera.getId() + " appartenente a " + tessera.getUtente().getCognome() + " è stata salvata con successo!");
+        } catch (NotFoundException e) {
+            System.out.println(id);
+        }
     }
 
     public Tessera findById(UUID id) {
@@ -35,7 +44,7 @@ public class TesseraDAO {
         transaction.begin();
         em.remove(found);
         transaction.commit();
-        System.out.println("La tessera \"" + found.getId() + " appartenente a " + found.getUtente() + "\" è stata eliminata con successo!");
+        System.out.println("La tessera " + found.getId() + " appartenente a " + found.getUtente().getCognome() + " è stata eliminata con successo!");
     }
 
 }

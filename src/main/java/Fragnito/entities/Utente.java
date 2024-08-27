@@ -23,8 +23,7 @@ public class Utente {
     public Utente() {
     }
 
-    public Utente(UUID id, String nome, String cognome, LocalDate dataNascita) {
-        this.id = id;
+    public Utente(String nome, String cognome, LocalDate dataNascita) {
         this.nome = nome;
         this.cognome = cognome;
         this.dataNascita = dataNascita;
@@ -57,5 +56,15 @@ public class Utente {
 
     public void setDataNascita(LocalDate dataNascita) {
         this.dataNascita = dataNascita;
+    }
+
+    @Override
+    public String toString() {
+        return "Utente{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", dataNascita=" + dataNascita +
+                '}';
     }
 }
