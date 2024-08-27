@@ -1,8 +1,6 @@
 package Fragnito;
 
 import Fragnito.dao.*;
-import Fragnito.entities.Mezzo;
-import Fragnito.enumClass.TipoMezzo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -21,8 +19,10 @@ public class Application {
         MezziDAO md = new MezziDAO(em);
         TrattaDAO trd = new TrattaDAO(em);
         ManutenzioneDAO mand = new ManutenzioneDAO(em);
-
-        md.save(new Mezzo(TipoMezzo.TRAM, trd.findById(UUID.fromString("09919180-db45-41ef-91ec-94971fe3e0a0"))));
+        BigliettiDAO bd = new BigliettiDAO(em);
+        ViaggiDAO vd = new ViaggiDAO(em);
+        
+        bd.vidimaBiglietto(UUID.fromString("a798badf-3f10-45a7-b52c-b72549d14fef"), vd.getViaggioById(UUID.fromString("9be8e175-f366-4d26-843d-3da30adb409f")));
 
         em.close();
         emf.close();

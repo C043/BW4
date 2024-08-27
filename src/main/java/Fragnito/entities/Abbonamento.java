@@ -18,10 +18,13 @@ public class Abbonamento extends Timbrabile {
     public Abbonamento() {
     }
 
-    public Abbonamento(LocalDate dataEmissione, Distributore distributore, LocalDate dataScadenza, PeriodoAbbonamento periodoAbbonamento) {
-        super(dataEmissione, distributore);
-        this.dataScadenza = dataScadenza;
+    public Abbonamento(Distributore distributore, Tessera tessera, PeriodoAbbonamento periodoAbbonamento) {
+        super(distributore, tessera);
         this.periodoAbbonamento = periodoAbbonamento;
+        switch (periodoAbbonamento) {
+            case MENSILE -> this.dataScadenza = LocalDate.now().plusMonths(1);
+            case SETTIMANALE -> this.dataScadenza = LocalDate.now().plusWeeks(1);
+        }
     }
 
     public LocalDate getDataScadenza() {

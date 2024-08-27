@@ -17,9 +17,8 @@ public class Biglietto extends Timbrabile {
     public Biglietto() {
     }
 
-    public Biglietto(LocalDate dataEmissione, Distributore distributore, LocalDate dataVidimazione) {
-        super(dataEmissione, distributore);
-        this.dataVidimazione = dataVidimazione;
+    public Biglietto(Distributore distributore, Tessera tessera) {
+        super(distributore, tessera);
     }
 
     public Viaggio getViaggio() {

@@ -29,9 +29,10 @@ public abstract class Timbrabile {
     public Timbrabile() {
     }
 
-    public Timbrabile(LocalDate dataEmissione, Distributore distributore) {
-        this.dataEmissione = dataEmissione;
+    public Timbrabile(Distributore distributore, Tessera tessera) {
+        this.dataEmissione = LocalDate.now();
         this.distributore = distributore;
+        this.tessera = tessera;
     }
 
     public Tessera getTessera() {

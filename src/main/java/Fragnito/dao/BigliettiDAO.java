@@ -1,10 +1,13 @@
 package Fragnito.dao;
 
 import Fragnito.entities.Timbrabile;
+import Fragnito.entities.Viaggio;
 import Fragnito.exceptions.NotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Query;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class BigliettiDAO {
@@ -35,5 +38,15 @@ public class BigliettiDAO {
         em.remove(found);
         transaction.commit();
         System.out.println("Biglietto o abbonamento " + found.getId() + " eliminato con successo!");
+    }
+
+    public void vidimaBiglietto(UUID id, Viaggio viaggio) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        Query updateQuery = em.createQuery("UPDATE Biglietto b SET b.dataVidimazione = :now, b.viaggio = :viaggio WHERE b.id = :id AND b.dataVidimazione IS NULL").setParameter("now", LocalDate.now()).setParameter("viaggio", viaggio).setParameter("id", id);
+        int numModifiche = updateQuery.executeUpdate();
+        transaction.commit();
+        if (numModifiche < 1) System.out.println("Biglietto non valido!");
+        else System.out.println("Biglietto vidimato con successo!");
     }
 }
