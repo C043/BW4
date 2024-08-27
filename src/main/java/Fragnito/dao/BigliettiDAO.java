@@ -61,4 +61,8 @@ public class BigliettiDAO {
     public Number contaBigliettiTotali() {
         return ((Number) em.createQuery("SELECT COUNT(b) FROM Timbrabile b").getSingleResult()).intValue();
     }
+
+    public Number contaBigliettiPerDistributore(UUID distributoreId) {
+        return ((Number) em.createQuery("SELECT COUNT(b) FROM Timbrabile b WHERE b.distributore.id = :id").setParameter("id", distributoreId).getSingleResult()).intValue();
+    }
 }

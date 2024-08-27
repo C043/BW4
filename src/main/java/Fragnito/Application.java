@@ -1,6 +1,8 @@
 package Fragnito;
 
 import Fragnito.dao.*;
+import Fragnito.entities.Abbonamento;
+import Fragnito.enumClass.PeriodoAbbonamento;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -22,9 +24,9 @@ public class Application {
         BigliettiDAO bd = new BigliettiDAO(em);
         ViaggiDAO vd = new ViaggiDAO(em);
 
-        bd.vidimaBiglietto(UUID.fromString("9e3fbd03-a0ad-4eda-82a7-8a457683994c"), vd.getViaggioById(UUID.fromString("9be8e175-f366-4d26-843d-3da30adb409f")));
+        bd.save(new Abbonamento(dd.getDistributoreById(UUID.fromString("94f4b7f7-3e06-42ee-b727-ccbcc2441828")), td.findById(UUID.fromString("6a12a698-c1a7-4e7d-9627-eafa02b48aac")), PeriodoAbbonamento.SETTIMANALE));
 
-        System.out.println(bd.contaBigliettiTotali());
+        System.out.println(bd.contaBigliettiPerDistributore(UUID.fromString("94f4b7f7-3e06-42ee-b727-ccbcc2441828")));
 
         em.close();
         emf.close();
