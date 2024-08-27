@@ -51,26 +51,6 @@ public class Application {
 //            System.out.println("Tessera valida!");
 //        }
 
-
-        /*Tratta nuovaTratta = new Tratta("Porta Venezia", "Piazza SanBabila", 46);
-        trd.save(nuovaTratta);
-
-
-        Mezzo nuovoMezzo = new Mezzo(TipoMezzo.BUS, nuovaTratta);
-        md.save(nuovoMezzo);
-
-
-        LocalDate oggi = LocalDate.now();
-        for (int i = 1; i <= 3; i++) {
-            Viaggio viaggio = new Viaggio(nuovoMezzo, oggi.plusDays(i), 50 + i);
-            vd.save(viaggio);
-            md.incrementaNumeroGiri(nuovoMezzo.getId());
-            md.aggiornaMediaTempoEffettivo(nuovoMezzo.getId(), viaggio.getTempoEffettivo());
-        }
-        Mezzo mezzoAggiornato = md.findById(nuovoMezzo.getId());
-        System.out.println("Numero di giri effettuati dal mezzo: " + mezzoAggiornato.getNumeroGiri());
-        System.out.println("Media del tempo effettivo per il mezzo: " + mezzoAggiornato.getMediaTempoEffettivo());*/
-
         em.close();
         emf.close();
     }

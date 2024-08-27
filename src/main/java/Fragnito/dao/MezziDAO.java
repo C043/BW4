@@ -56,31 +56,4 @@ public class MezziDAO {
         transaction.commit();
         System.out.println("Modifica avvenuta con successo!");
     }
-
- /*   public void incrementaNumeroGiri(UUID id) {
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
-        Mezzo mezzo = findById(id);
-        if (mezzo != null) {
-            mezzo.setNumeroGiri(mezzo.getNumeroGiri() + 1);
-            em.merge(mezzo);
-            System.out.println("Numero giri aggiornato per il mezzo n. " + id);
-        }
-        transaction.commit();
-    }
-
-    public void aggiornaMediaTempoEffettivo(UUID mezzoId, double nuovoTempoEffettivo) {
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
-        Mezzo mezzo = findById(mezzoId);
-        if (mezzo != null) {
-            double mediaAttuale = mezzo.getMediaTempoEffettivo();
-            int numeroGiri = mezzo.getNumeroGiri();
-            double nuovaMedia = (mediaAttuale * numeroGiri + nuovoTempoEffettivo) / (numeroGiri + 1);
-            mezzo.setMediaTempoEffettivo(nuovaMedia);
-            em.merge(mezzo);
-            System.out.println("Media tempo effettivo aggiornata per il mezzo n. " + mezzoId);
-        }
-        transaction.commit();
-    }*/
 }
