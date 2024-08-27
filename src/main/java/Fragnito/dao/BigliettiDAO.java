@@ -33,11 +33,16 @@ public class BigliettiDAO {
         return found;
     }
 
-    public Abbonamento getAbbonamentoById(UUID id) {
+    public boolean getAbbonamentoById(UUID id) {
         Abbonamento found = em.find(Abbonamento.class, id);
-        if (found == null) throw new NotFoundException(id);
-        return found;
+        if (found == null)
+            return false;
+
+        boolean isValido = found.getDataScadenza().isAfter(LocalDate.now())
+                && found.getTessera().getId().equals(id);
+        return isValido;
     }
+
 
     public void delete(UUID id) {
         Timbrabile found = getBigliettoById(id);
