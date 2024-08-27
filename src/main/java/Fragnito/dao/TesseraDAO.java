@@ -6,6 +6,7 @@ import Fragnito.exceptions.NotFoundException;
 import com.github.javafaker.Faker;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Query;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -48,6 +49,18 @@ public class TesseraDAO {
         em.remove(found);
         transaction.commit();
         System.out.println("La tessera " + found.getId() + " appartenente a " + found.getUtente().getCognome() + " è stata eliminata con successo!");
+    }
+
+
+    public void rinnovaTessera(Tessera tessera) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        Query updateQuery = em.createQuery("UPDATE Tessera t SET t.dataEmissione = :dataEmissione, t.dataScadenza = :dataScadenza WHERE t.id = :id")
+                .setParameter("dataEmissione", tessera.getDataEmissione()).setParameter("dataScadenza", LocalDate.now().plusYears(1)).setParameter("id", tessera.getId());
+        int numModifiche = updateQuery.executeUpdate();
+        transaction.commit();
+        if (numModifiche < 1) System.out.println("Tessera non valida!");
+        else System.out.println("Tessera rinnovata con successo!");
     }
 
 
