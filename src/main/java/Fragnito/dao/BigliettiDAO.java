@@ -65,4 +65,8 @@ public class BigliettiDAO {
     public Number contaBigliettiPerDistributore(UUID distributoreId) {
         return ((Number) em.createQuery("SELECT COUNT(b) FROM Timbrabile b WHERE b.distributore.id = :id").setParameter("id", distributoreId).getSingleResult()).intValue();
     }
+
+    public Number contaBigliettiRangeTempo(LocalDate start, LocalDate end) {
+        return ((Number) em.createQuery("SELECT COUNT(b) FROM Timbrabile b WHERE b.dataEmissione BETWEEN :startDate AND :endDate").setParameter("startDate", start).setParameter("endDate", end).getSingleResult()).intValue();
+    }
 }
