@@ -9,8 +9,7 @@ import jakarta.persistence.EntityTransaction;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 public class UtenteDAO {
 
@@ -20,8 +19,11 @@ public class UtenteDAO {
         this.em = em;
     }
 
-    public void generaUtenti(int n) {
-        Faker faker = new Faker();
+
+    public List<Utente> generaUtenti(int n) {
+        Faker faker = new Faker(new Locale("it"));
+
+        List<Utente> utenti = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
             Date date = faker.date().birthday(1, 20);
@@ -33,9 +35,12 @@ public class UtenteDAO {
             em.persist(newUtente);
             transaction.commit();
             System.out.println("L'utente " + newUtente.getCognome() + " è stato salvato con successo!");
+
+            utenti.add(newUtente);
         }
 
 
+        return utenti;
     }
 
     public Utente findById(UUID id) {

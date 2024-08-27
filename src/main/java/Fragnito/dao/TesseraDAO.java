@@ -3,15 +3,18 @@ package Fragnito.dao;
 import Fragnito.entities.Tessera;
 import Fragnito.entities.Utente;
 import Fragnito.exceptions.NotFoundException;
+import com.github.javafaker.Faker;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import java.time.ZoneId;
+import java.util.*;
 
 public class TesseraDAO {
 
     private final EntityManager em;
+    Faker faker = new Faker(new Locale("it"));
 
     public TesseraDAO(EntityManager em) {
         this.em = em;
@@ -45,6 +48,28 @@ public class TesseraDAO {
         em.remove(found);
         transaction.commit();
         System.out.println("La tessera " + found.getId() + " appartenente a " + found.getUtente().getCognome() + " è stata eliminata con successo!");
+    }
+
+
+    public List<Tessera> associaUtente(List<Utente> utenti) {
+
+        List<Tessera> tessere = new ArrayList<>();
+
+
+        for (int i = 0; i < utenti.size(); i++) {
+            Utente utente = utenti.get(i);
+            Date date = faker.date().birthday(1, 20);
+            LocalDate dataEmissione = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            Tessera tessera = new Tessera(utente, dataEmissione);
+            EntityTransaction transaction = em.getTransaction();
+            transaction.begin();
+            em.persist(tessera);
+            transaction.commit();
+            tessere.add(tessera);
+            System.out.println(tessera);
+        }
+
+        return tessere;
     }
 
 }
