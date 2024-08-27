@@ -27,11 +27,11 @@ public class Mezzo {
     @Enumerated(EnumType.STRING)
     private StatoMezzo statoMezzo;
 
-    @Column(name = "numero_giri", nullable = false)
-    private int numeroGiri = 0;
+/*    @Column(name = "numero_giri", nullable = false)
+    private int numeroGiri = 0;*/
 
-    @Column(name = "media_tempo_effettivo", nullable = false)
-    private double mediaTempoEffettivo = 0.0;
+   /* @Column(name = "media_tempo_effettivo", nullable = false)
+    private double mediaTempoEffettivo = 0.0;*/
 
     //un veicolo può essere stato in manutenzione più volte
     @OneToMany(mappedBy = "mezzo")
@@ -113,6 +113,7 @@ public class Mezzo {
         this.viaggi = viaggi;
     }
 
+/*
     public int getNumeroGiri() {
         return numeroGiri;
     }
@@ -120,14 +121,15 @@ public class Mezzo {
     public void setNumeroGiri(int numeroGiri) {
         this.numeroGiri = numeroGiri;
     }
+*/
 
-    public double getMediaTempoEffettivo() {
+/*    public double getMediaTempoEffettivo() {
         return mediaTempoEffettivo;
     }
 
     public void setMediaTempoEffettivo(double mediaTempoEffettivo) {
         this.mediaTempoEffettivo = mediaTempoEffettivo;
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -136,9 +138,11 @@ public class Mezzo {
                 ", tipoMezzo=" + tipoMezzo +
                 ", capacita=" + capacita +
                 ", statoMezzo=" + statoMezzo +
-                ", numeroGiri=" + numeroGiri +
+                /*             ", numeroGiri=" + numeroGiri +*/
                 ", manutenzioni=" + manutenzioni +
+/*
                 ", mediaTempoEffettivo=" + mediaTempoEffettivo +
+*/
                 '}';
     }
 }

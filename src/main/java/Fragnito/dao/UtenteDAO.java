@@ -43,6 +43,12 @@ public class UtenteDAO {
         return utenti;
     }
 
+   /* public void save(Utente utente){
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        em.
+    }*/
+
     public Utente findById(UUID id) {
         Utente found = em.find(Utente.class, id);
         if (found == null) throw new NotFoundException(id);

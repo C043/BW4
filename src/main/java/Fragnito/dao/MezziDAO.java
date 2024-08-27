@@ -57,7 +57,7 @@ public class MezziDAO {
         System.out.println("Modifica avvenuta con successo!");
     }
 
-    public void incrementaNumeroGiri(UUID id) {
+ /*   public void incrementaNumeroGiri(UUID id) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         Mezzo mezzo = findById(id);
@@ -82,5 +82,5 @@ public class MezziDAO {
             System.out.println("Media tempo effettivo aggiornata per il mezzo n. " + mezzoId);
         }
         transaction.commit();
-    }
+    }*/
 }

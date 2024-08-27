@@ -1,16 +1,12 @@
 package Fragnito;
 
 import Fragnito.dao.*;
-import Fragnito.entities.Mezzo;
-import Fragnito.entities.Tratta;
-import Fragnito.entities.Viaggio;
-import Fragnito.enumClass.TipoMezzo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 import java.util.Scanner;
-import java.time.LocalDate;
+import java.util.UUID;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("BW4-Team-5");
@@ -30,9 +26,9 @@ public class Application {
         BigliettiDAO bd = new BigliettiDAO(em);
         ViaggiDAO vd = new ViaggiDAO(em);
 
-//        md.save(new Mezzo(TipoMezzo.TRAM, trd.findById(UUID.fromString("09919180-db45-41ef-91ec-94971fe3e0a0"))));
+        System.out.println(bd.getAbbonamentoById(UUID.fromString("2e2e7299-f4a8-49b7-83ff-7e6b15f07c64")));
 
-        ud.generaUtenti(5);
+//        md.save(new Mezzo(TipoMezzo.TRAM, trd.findById(UUID.fromString("09919180-db45-41ef-91ec-94971fe3e0a0"))));
 
         // rinnovo tessere con id tessera -> da sistemare
 //        System.out.print("Inserisci l'ID della tessera da vidimare: ");
@@ -56,7 +52,7 @@ public class Application {
 //        }
 
 
-        Tratta nuovaTratta = new Tratta("Porta Venezia", "Piazza SanBabila", 46);
+        /*Tratta nuovaTratta = new Tratta("Porta Venezia", "Piazza SanBabila", 46);
         trd.save(nuovaTratta);
 
 
@@ -73,7 +69,7 @@ public class Application {
         }
         Mezzo mezzoAggiornato = md.findById(nuovoMezzo.getId());
         System.out.println("Numero di giri effettuati dal mezzo: " + mezzoAggiornato.getNumeroGiri());
-        System.out.println("Media del tempo effettivo per il mezzo: " + mezzoAggiornato.getMediaTempoEffettivo());
+        System.out.println("Media del tempo effettivo per il mezzo: " + mezzoAggiornato.getMediaTempoEffettivo());*/
 
         em.close();
         emf.close();

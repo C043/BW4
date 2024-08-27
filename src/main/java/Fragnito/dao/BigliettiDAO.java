@@ -1,5 +1,7 @@
 package Fragnito.dao;
 
+import Fragnito.entities.Abbonamento;
+import Fragnito.entities.Biglietto;
 import Fragnito.entities.Timbrabile;
 import Fragnito.entities.Viaggio;
 import Fragnito.exceptions.NotFoundException;
@@ -25,8 +27,14 @@ public class BigliettiDAO {
         System.out.println("Biglietto / abbonamento erogato con successo!");
     }
 
-    public Timbrabile getBigliettoById(UUID id) {
-        Timbrabile found = em.find(Timbrabile.class, id);
+    public Biglietto getBigliettoById(UUID id) {
+        Biglietto found = em.find(Biglietto.class, id);
+        if (found == null) throw new NotFoundException(id);
+        return found;
+    }
+
+    public Abbonamento getAbbonamentoById(UUID id) {
+        Abbonamento found = em.find(Abbonamento.class, id);
         if (found == null) throw new NotFoundException(id);
         return found;
     }
