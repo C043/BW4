@@ -52,7 +52,10 @@ public class Application {
     /*    vd.save(new Viaggio(md.findById(UUID.fromString("80282f3a-4204-4529-ac4c-ee09e1040215")), LocalDate.now(), 130));
         vd.save(new Viaggio(md.findById(UUID.fromString("80282f3a-4204-4529-ac4c-ee09e1040215")), LocalDate.now(), 150));
         vd.save(new Viaggio(md.findById(UUID.fromString("80282f3a-4204-4529-ac4c-ee09e1040215")), LocalDate.now(), 90));*/
-        ud.save(new Utente("Mario", "Fragnito", LocalDate.of(1999, 5, 7)));
+
+        ud.save(new Utente("Mario", "Fragnito", LocalDate.of(1999, 5, 7), "mariofragnito@gmail.com", "1234"));
+
+        System.out.println(ud.login("mariofragnito@gmail.com", "1234"));
 
         em.close();
         emf.close();

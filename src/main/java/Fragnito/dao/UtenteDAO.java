@@ -64,7 +64,7 @@ public class UtenteDAO {
     }
 
     public Utente login(String email, String password) {
-        return em.createQuery("SELECT Utente u WHERE u.email = :email AND u.password = :password", Utente.class)
+        return em.createQuery("SELECT u FROM Utente u WHERE u.email = :email AND u.password = :password", Utente.class)
                 .setParameter("email", email)
                 .setParameter("password", password)
                 .getSingleResult();

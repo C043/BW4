@@ -4,6 +4,7 @@ import Fragnito.entities.Distributore;
 import Fragnito.enumClass.StatoDistributore;
 import Fragnito.enumClass.TipoDistributore;
 import Fragnito.exceptions.NotFoundException;
+import com.github.javafaker.Faker;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
@@ -17,22 +18,24 @@ public class DistributoriDAO {
     }
 
     public void generateNDistributors(int n) {
+        Faker faker = new Faker();
         for (int i = 0; i < n; i++) {
             EntityTransaction transaction = em.getTransaction();
             transaction.begin();
             TipoDistributore randomTipo = TipoDistributore.randomTipoDistributore();
             if (randomTipo == TipoDistributore.DISTRIBUTORE_AUTOMATICO)
-                em.persist(new Distributore(randomTipo, StatoDistributore.ATTIVO));
-            else em.persist(new Distributore(randomTipo, null));
+                em.persist(new Distributore(faker.address().fullAddress(), randomTipo, StatoDistributore.ATTIVO));
+            else em.persist(new Distributore(faker.address().fullAddress(), randomTipo, null));
             transaction.commit();
             System.out.println("Distributore aggiunto con successo!");
         }
     }
 
     public void saveDistributore(TipoDistributore tipo, StatoDistributore stato) {
+        Faker faker = new Faker();
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        em.persist(new Distributore(tipo, stato));
+        em.persist(new Distributore(faker.address().fullAddress(), tipo, stato));
         transaction.commit();
         System.out.println("Distributore aggiunto con successo!");
     }
