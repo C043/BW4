@@ -115,7 +115,7 @@ public class Application {
                             if (Objects.equals(password, "")) throw new InvalidInputException();
                             Utente user = new Utente(nome, cognome, dataNascita, email, password);
                             ud.save(user);
-                            tesseraValida(user, scanner, dd, bd, td, trd, vd, ud);
+                            tesseraValida(ud.findById(user.getId()), scanner, dd, bd, td, trd, vd, ud);
                         } catch (DateTimeParseException e) {
                             System.out.println("Input non valido, inserisci una data nel formato yyyy-mm-dd");
                         } catch (InvalidInputException e) {
@@ -202,10 +202,10 @@ public class Application {
                     break;
                 }
                 case "3": {
-                    if (td.isAbbonamentoPresent(utente.getTessera().getId())) {
+                    if (td.isAbbonamentoPresent(td.getTesseraByUtente(utente.getId()).getId())) {
                         viaggia(scanner, trd, vd);
                         System.out.println("Buon viaggio!");
-                    } else if (!bd.getBigliettiNonVidimati(utente.getTessera().getId()).isEmpty()) {
+                    } else if (!bd.getBigliettiNonVidimati(td.getTesseraByUtente(utente.getId()).getId()).isEmpty()) {
                         UUID viaggioID = viaggia(scanner, trd, vd);
                         bd.vidimaBiglietto(bd.getBigliettiNonVidimati(utente.getTessera().getId()).getFirst().getId(), vd.getViaggioById(viaggioID));
                         System.out.println("Buon viaggio!");

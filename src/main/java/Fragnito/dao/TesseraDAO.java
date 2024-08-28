@@ -42,6 +42,12 @@ public class TesseraDAO {
         return found;
     }
 
+    public Tessera getTesseraByUtente(UUID utenteId) {
+        return em.createQuery("SELECT t FROM Tessera t WHERE t.utente.id = :utenteId", Tessera.class)
+                .setParameter("utenteId", utenteId)
+                .getSingleResult();
+    }
+
     public void findByIdAndDelete(UUID id) {
         Tessera found = this.findById(id);
         EntityTransaction transaction = em.getTransaction();
