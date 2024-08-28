@@ -71,6 +71,7 @@ public class Application {
         System.out.println("Numero di giri effettuati dal mezzo: " + mezzoAggiornato.getNumeroGiri());
         System.out.println("Media del tempo effettivo per il mezzo: " + mezzoAggiornato.getMediaTempoEffettivo());*/
 
+
         em.close();
         emf.close();
     }
