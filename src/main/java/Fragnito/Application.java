@@ -1,18 +1,25 @@
 package Fragnito;
 
 import Fragnito.dao.*;
+import Fragnito.entities.Utente;
+import Fragnito.exceptions.InvalidInputException;
+import com.github.javafaker.Faker;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Objects;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("BW4-Team-5");
 
     public static void main(String[] args) {
-
+        Faker faker = new Faker();
         Scanner scanner = new Scanner(System.in);
 
         EntityManager em = emf.createEntityManager();
@@ -26,19 +33,63 @@ public class Application {
         BigliettiDAO bd = new BigliettiDAO(em);
         ViaggiDAO vd = new ViaggiDAO(em);
 
-        /*ud.save(new Utente("Mario", "Fragnito", LocalDate.of(1999, 5, 7), "mariofragnito@gmail.com", "1234"));
+     /*   trd.generateNTratte(5);
+        dd.generateNDistributors(5);*/
 
-        System.out.println(ud.login("mariofragnito@gmail.com", "1234"));*/
+        System.out.println("Benvenuto su EPI-Trasporti!");
+        System.out.println("Cosa vuoi fare?");
+        System.out.println("1. Login");
+        System.out.println("2. Sign in");
+        System.out.println("Premi il numero corrispondente");
 
-        /*dd.generateNDistributors(10);*/
+        String accesso = scanner.nextLine();
 
-
-/*
-        bd.save(new Abbonamento(dd.getDistributoreById(UUID.fromString("1cf7fa10-6d8c-463e-8bb1-8241a5de4fd2")), td.findById(UUID.fromString("b5a6b976-bef7-4bfe-8c83-d9c3f1548d07")), PeriodoAbbonamento.SETTIMANALE));
-*/
-
-        System.out.println(bd.isAbbonamentoValido(UUID.fromString("b5a6b976-bef7-4bfe-8c83-d9c3f1548d07"), UUID.fromString("97ff98f8-0646-4100-a343-120df9a4484f")));
-
+        switch (accesso) {
+            case "1": {
+                boolean utenteTrovato = false;
+                while (!utenteTrovato) {
+                    System.out.println("Login:");
+                    System.out.println("Inserisci la tua email");
+                    String email = scanner.nextLine();
+                    System.out.println("Inserisci la tua password");
+                    String password = scanner.nextLine();
+                    try {
+                        Utente user = ud.login(email, password);
+                        System.out.println(user);
+                        utenteTrovato = true;
+                    } catch (NoResultException e) {
+                        System.out.println("Utente non trovato");
+                    }
+                }
+                break;
+            }
+            case "2": {
+                System.out.println("Registrazione:");
+                System.out.println("Inserisci il tuo nome");
+                String nome = scanner.nextLine();
+                System.out.println("Inserisci il tuo cognome");
+                String cognome = scanner.nextLine();
+                boolean inputValido = false;
+                while (!inputValido) {
+                    System.out.println("Inserisci la tua data di nascita in formato yyyy-mm-dd");
+                    try {
+                        LocalDate dataNascita = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ISO_LOCAL_DATE);
+                        inputValido = true;
+                        System.out.println("Inserisci la tua email");
+                        String email = scanner.nextLine();
+                        if (Objects.equals(email, "")) throw new InvalidInputException();
+                        System.out.println("Inserisci la tua password");
+                        String password = scanner.nextLine();
+                        if (Objects.equals(password, "")) throw new InvalidInputException();
+                        ud.save(new Utente(nome, cognome, dataNascita, email, password));
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Input non valido, inserisci una data nel formato yyyy-mm-dd");
+                    } catch (InvalidInputException e) {
+                        System.out.println("Input non valido, non puoi inserire una stringa vuota");
+                    }
+                }
+            }
+        }
 
         em.close();
         emf.close();

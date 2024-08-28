@@ -2,6 +2,8 @@ package Fragnito.dao;
 
 import Fragnito.entities.Mezzo;
 import Fragnito.entities.Tratta;
+import Fragnito.enumClass.TipoMezzo;
+import com.github.javafaker.Faker;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.EntityTransaction;
@@ -24,16 +26,21 @@ public class TrattaDAO {
             em.persist(tratta);
             transaction.commit();
             System.out.println("Tratta n. " + tratta.getId() + " aggiunta con successo!");
-            // WIP
-            md.save(new Mezzo());
+            md.save(new Mezzo(TipoMezzo.randomTipoMezzo(), findById(tratta.getId())));
         } catch (TransactionalException te) {
             System.err.println(te.getMessage());
         }
     }
 
-/*
-    public void generateNTratte
-*/
+
+    public void generateNTratte(int n) {
+        Faker faker = new Faker();
+        EntityTransaction transaction = em.getTransaction();
+        for (int i = 0; i < n; i++) {
+            save(new Tratta(faker.gameOfThrones().city(), faker.lordOfTheRings().location(), faker.random().nextInt(30, 120)));
+        }
+    }
+
 
     public Tratta findById(UUID id) {
         Tratta tratta = em.find(Tratta.class, id);
