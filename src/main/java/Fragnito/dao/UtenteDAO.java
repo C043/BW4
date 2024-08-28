@@ -9,7 +9,9 @@ import jakarta.persistence.EntityTransaction;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.Date;
+import java.util.Locale;
+import java.util.UUID;
 
 public class UtenteDAO {
 
@@ -23,16 +25,12 @@ public class UtenteDAO {
     public void generaUtenti(int n) {
         Faker faker = new Faker(new Locale("it"));
 
-        List<Utente> utenti = new ArrayList<>();
-
         for (int i = 0; i < n; i++) {
             Date date = faker.date().birthday(1, 20);
             LocalDate randomLocalDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             Utente newUtente = new Utente(faker.name().firstName(), faker.name().lastName(), randomLocalDate, faker.internet().emailAddress(), faker.internet().password());
             save(newUtente);
             System.out.println("L'utente " + newUtente.getCognome() + " è stato salvato con successo!");
-
-            utenti.add(newUtente);
         }
     }
 
