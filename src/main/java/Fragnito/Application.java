@@ -34,6 +34,7 @@ public class Application {
         dd.generateNDistributors(10);
         
 
+
         em.close();
         emf.close();
     }
