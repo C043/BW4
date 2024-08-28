@@ -38,9 +38,8 @@ public class BigliettiDAO {
         if (found == null)
             return false;
 
-        boolean isValido = found.getDataScadenza().isAfter(LocalDate.now())
+        return found.getDataScadenza().isAfter(LocalDate.now())
                 && found.getTessera().getId().equals(id);
-        return isValido;
     }
 
 

@@ -14,8 +14,7 @@ public class AbbonamentoDAO {
         TypedQuery<Long> query = entityManager.createQuery(
                 "SELECT COUNT(a) FROM Abbonamento a " +
                         "WHERE a.tessera.numero = :numeroTessera " +
-                        "AND a.dataScadenza >= :oggi " +
-                        "AND a.dataScadenza <= :oggi.plusDays(30)", Long.class);
+                        "AND a.dataScadenza >= :oggi", Long.class);
         query.setParameter("numeroTessera", numeroTessera);
         query.setParameter("oggi", oggi);
         Long count = query.getSingleResult();
