@@ -1,10 +1,7 @@
 package Fragnito;
 
 import Fragnito.dao.*;
-import Fragnito.entities.Abbonamento;
-import Fragnito.entities.Biglietto;
-import Fragnito.entities.Distributore;
-import Fragnito.entities.Utente;
+import Fragnito.entities.*;
 import Fragnito.enumClass.PeriodoAbbonamento;
 import Fragnito.exceptions.InvalidInputException;
 import com.github.javafaker.Faker;
@@ -16,9 +13,7 @@ import jakarta.persistence.Persistence;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("BW4-Team-5");
@@ -69,7 +64,7 @@ public class Application {
                             boolean check = td.checkTessera(user.getTessera().getId());
                             System.out.println(check);
                             if (check) {
-                                tesseraValida(user, scanner, dd, bd, td);
+                                tesseraValida(user, scanner, dd, bd, td, trd, vd);
                             }
 
                         } catch (NoResultException e) {
@@ -99,7 +94,7 @@ public class Application {
                             if (Objects.equals(password, "")) throw new InvalidInputException();
                             Utente user = new Utente(nome, cognome, dataNascita, email, password);
                             ud.save(user);
-                            tesseraValida(user, scanner, dd, bd, td);
+                            tesseraValida(user, scanner, dd, bd, td, trd, vd);
                         } catch (DateTimeParseException e) {
                             System.out.println("Input non valido, inserisci una data nel formato yyyy-mm-dd");
                         } catch (InvalidInputException e) {
@@ -124,7 +119,7 @@ public class Application {
         emf.close();
     }
 
-    private static void tesseraValida(Utente utente, Scanner scanner, DistributoriDAO dd, BigliettiDAO bd, TesseraDAO td) {
+    private static void tesseraValida(Utente utente, Scanner scanner, DistributoriDAO dd, BigliettiDAO bd, TesseraDAO td, TrattaDAO trd, ViaggiDAO vd) {
         boolean exitApp = false;
         while (!exitApp) {
             System.out.println("Cosa desideri fare?");
@@ -148,7 +143,6 @@ public class Application {
                         for (int i = 1; i <= listaDistributori.size(); i++) {
                             if (distributore == i)
                                 bd.save(new Biglietto(listaDistributori.get(i - 1), utente.getTessera()));
-                            else System.out.println("Distributore inesistente");
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Input non valido, inserisci il numero corrispondente");
@@ -186,6 +180,18 @@ public class Application {
                     }
                     break;
                 }
+                case "3": {
+                    if (td.isAbbonamentoPresent(utente.getTessera().getId())) {
+                        viaggia(scanner, trd, vd);
+                        System.out.println("Buon viaggio!");
+                    } else if (!bd.getBigliettiNonVidimati(utente.getTessera().getId()).isEmpty()) {
+                        UUID viaggioID = viaggia(scanner, trd, vd);
+                        bd.vidimaBiglietto(bd.getBigliettiNonVidimati(utente.getTessera().getId()).getFirst().getId(), vd.getViaggioById(viaggioID));
+                        System.out.println("Buon viaggio!");
+                    } else
+                        System.out.println("Nessun biglietto o abbonamento disponibile sulla tessera, comprane uno prima");
+                    break;
+                }
                 case "4": {
                     System.out.println("Ecco la tua tessera:");
                     System.out.println(utente.getTessera());
@@ -202,6 +208,32 @@ public class Application {
                 }
             }
         }
+    }
+
+    private static UUID viaggia(Scanner scanner, TrattaDAO trd, ViaggiDAO vd) {
+        Random rand = new Random();
+        System.out.println("Dove vuoi andare?");
+        System.out.println("Elenco distributori disponibili:");
+        List<Tratta> listaTratte = trd.getAllTratte();
+        for (int i = 0; i < listaTratte.size(); i++) {
+            System.out.println(i + 1 + ". " + listaTratte.get(i).getCapolinea());
+        }
+        System.out.println("Digita il numero corrispondente");
+
+        UUID viaggioId = null;
+        try {
+            int tratta = Integer.parseInt(scanner.nextLine());
+            for (int i = 1; i <= listaTratte.size(); i++) {
+                if (tratta == i) {
+                    Viaggio viaggio = new Viaggio(listaTratte.get(i - 1).getMezzi().getFirst(), LocalDate.now(), rand.nextInt(listaTratte.get(i - 1).getTempoPrevisto() - 10, listaTratte.get(i - 1).getTempoPrevisto() + 10));
+                    vd.save(viaggio);
+                    viaggioId = viaggio.getId();
+                }
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Input non valido, inserisci il numero corrispondente");
+        }
+        return viaggioId;
     }
 }
 

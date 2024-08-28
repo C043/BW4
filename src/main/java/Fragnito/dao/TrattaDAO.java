@@ -9,6 +9,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.EntityTransaction;
 import jakarta.transaction.TransactionalException;
 
+import java.util.List;
 import java.util.UUID;
 
 public class TrattaDAO {
@@ -64,5 +65,8 @@ public class TrattaDAO {
         }
     }
 
-
+    public List<Tratta> getAllTratte() {
+        return em.createQuery("SELECT t FROM Tratta t", Tratta.class)
+                .getResultList();
+    }
 }

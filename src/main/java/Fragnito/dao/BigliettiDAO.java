@@ -10,6 +10,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public class BigliettiDAO {
@@ -100,5 +101,11 @@ public class BigliettiDAO {
                 .setParameter("abbonamentoId", abbonamentoId)
                 .getSingleResult();
         return query > 0;
+    }
+
+    public List<Biglietto> getBigliettiNonVidimati(UUID tesseraId) {
+        return em.createQuery("SELECT b FROM Biglietto b WHERE b.tessera.id = :id AND b.dataVidimazione IS NULL", Biglietto.class)
+                .setParameter("id", tesseraId)
+                .getResultList();
     }
 }
