@@ -8,6 +8,7 @@ import com.github.javafaker.Faker;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
+import java.util.List;
 import java.util.UUID;
 
 public class DistributoriDAO {
@@ -63,5 +64,11 @@ public class DistributoriDAO {
         em.merge(distributore);
         transaction.commit();
         System.out.println("Stato del distributore aggiornato con successo!");
+    }
+
+    public List<Distributore> getAllDistributors() {
+        return em.createQuery("SELECT d FROM Distributore d WHERE d.stato = :stato OR d.stato IS NULL", Distributore.class)
+                .setParameter("stato", StatoDistributore.ATTIVO)
+                .getResultList();
     }
 }

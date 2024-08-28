@@ -90,4 +90,13 @@ public class TesseraDAO {
         return tessere;
     }
 
+    public boolean isAbbonamentoPresent(UUID numeroTessera) {
+        return em.createQuery(
+                        "SELECT COUNT(a) FROM Abbonamento a " +
+                                "WHERE a.tessera.id = :numeroTessera " +
+                                "AND a.dataScadenza >= :oggi", Long.class)
+                .setParameter("numeroTessera", numeroTessera)
+                .setParameter("oggi", LocalDate.now())
+                .getSingleResult() > 0;
+    }
 }
