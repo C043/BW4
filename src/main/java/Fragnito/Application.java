@@ -3,6 +3,7 @@ package Fragnito;
 import Fragnito.dao.*;
 import Fragnito.entities.*;
 import Fragnito.enumClass.PeriodoAbbonamento;
+import Fragnito.exceptions.EmailAlreadyExistException;
 import Fragnito.exceptions.InvalidInputException;
 import com.github.javafaker.Faker;
 import jakarta.persistence.EntityManager;
@@ -109,6 +110,7 @@ public class Application {
                             inputValido = true;
                             System.out.println("Inserisci la tua email");
                             String email = scanner.nextLine();
+                            if (ud.checkUtente(email)) throw new EmailAlreadyExistException();
                             if (Objects.equals(email, "")) throw new InvalidInputException();
                             System.out.println("Inserisci la tua password");
                             String password = scanner.nextLine();
@@ -120,6 +122,8 @@ public class Application {
                             System.out.println("Input non valido, inserisci una data nel formato yyyy-mm-dd");
                         } catch (InvalidInputException e) {
                             System.out.println("Input non valido, non puoi inserire una stringa vuota");
+                        } catch (EmailAlreadyExistException e) {
+                            System.out.println("Email già registrata, inseriscine un'altra");
                         }
                     }
                     break;

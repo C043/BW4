@@ -67,4 +67,10 @@ public class UtenteDAO {
                 .setParameter("password", password)
                 .getSingleResult();
     }
+
+    public boolean checkUtente(String email) {
+        return em.createQuery("SELECT COUNT(u) FROM Utente u WHERE u.email = :email", Long.class)
+                .setParameter("email", email)
+                .getSingleResult() > 0;
+    }
 }
