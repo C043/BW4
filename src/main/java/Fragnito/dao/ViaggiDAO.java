@@ -43,9 +43,8 @@ public class ViaggiDAO {
                 .getSingleResult();
     }
 
-    public double calcolaTempoMedio(UUID mezzoId, UUID trattaId) {
-        return em.createQuery("SELECT AVG(v.tempoEffettivo) FROM Viaggio v WHERE v.mezzo.id = :mezzoId AND v.mezzo.tratta.id = :trattaId", Double.class)
-                .setParameter("trattaId", trattaId)
+    public double calcolaTempoMedio(UUID mezzoId) {
+        return em.createQuery("SELECT AVG(v.tempoEffettivo) FROM Viaggio v WHERE v.mezzo.id = :mezzoId", Double.class)
                 .setParameter("mezzoId", mezzoId)
                 .getSingleResult();
     }

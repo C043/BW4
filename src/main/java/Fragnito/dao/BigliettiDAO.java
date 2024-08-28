@@ -67,8 +67,8 @@ public class BigliettiDAO {
         return ((Number) em.createQuery("SELECT COUNT(b) FROM Biglietto b WHERE b.viaggio.mezzo.id = :mezzoId").setParameter("mezzoId", mezzoId).getSingleResult()).intValue();
     }
 
-    public Integer contaVidimazioniRangeTempo(LocalDate start, LocalDate end) {
-        return em.createQuery("SELECT COUNT(b) FROM Biglietto b WHERE b.dataVidimazione BETWEEN :startDate AND :endDate", Integer.class)
+    public Long contaVidimazioniRangeTempo(LocalDate start, LocalDate end) {
+        return em.createQuery("SELECT COUNT(b) FROM Biglietto b WHERE b.dataVidimazione BETWEEN :startDate AND :endDate", Long.class)
                 .setParameter("startDate", start)
                 .setParameter("endDate", end)
                 .getSingleResult();
@@ -78,8 +78,8 @@ public class BigliettiDAO {
         return ((Number) em.createQuery("SELECT COUNT(b) FROM Timbrabile b").getSingleResult()).intValue();
     }
 
-    public Integer contaBigliettiPerDistributore(UUID distributoreId) {
-        return em.createQuery("SELECT COUNT(b) FROM Timbrabile b WHERE b.distributore.id = :id", int.class)
+    public Long contaBigliettiPerDistributore(UUID distributoreId) {
+        return em.createQuery("SELECT COUNT(b) FROM Timbrabile b WHERE b.distributore.id = :id", Long.class)
                 .setParameter("id", distributoreId)
                 .getSingleResult();
     }

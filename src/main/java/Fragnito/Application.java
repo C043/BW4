@@ -49,21 +49,20 @@ public class Application {
             switch (accesso) {
                 // Login
                 case "1": {
-                    boolean utenteTrovato = false;
-                    while (!utenteTrovato) {
-                        System.out.println("Login:");
-                        System.out.println("Inserisci la tua email");
-                        String email = scanner.nextLine();
+                    System.out.println("Login:");
+                    System.out.println("Inserisci la tua email");
+                    String email = scanner.nextLine();
+                    if (Objects.equals(email, "mellon")) adminMenu(scanner, bd, dd, vd);
+                    else {
                         System.out.println("Inserisci la tua password");
                         String password = scanner.nextLine();
                         try {
                             Utente user = ud.login(email, password);
                             System.out.println(user);
-                            utenteTrovato = true;
                             // Controllo tessera
                             boolean check = td.checkTessera(user.getTessera().getId());
                             if (check) {
-                                tesseraValida(user, scanner, dd, bd, td, trd, vd);
+                                tesseraValida(user, scanner, dd, bd, td, trd, vd, ud);
                             } else {
                                 System.out.println("Tessera scaduta, rinnovare? (10$)");
                                 System.out.println("La tessera è richiesta per viaggiare con EPI-Trasporti.");
@@ -74,7 +73,7 @@ public class Application {
                                 switch (risposta) {
                                     case "1": {
                                         td.rinnovaTessera(user.getTessera());
-                                        tesseraValida(user, scanner, dd, bd, td, trd, vd);
+                                        tesseraValida(user, scanner, dd, bd, td, trd, vd, ud);
                                         break;
                                     }
                                     case "2": {
@@ -116,7 +115,7 @@ public class Application {
                             if (Objects.equals(password, "")) throw new InvalidInputException();
                             Utente user = new Utente(nome, cognome, dataNascita, email, password);
                             ud.save(user);
-                            tesseraValida(user, scanner, dd, bd, td, trd, vd);
+                            tesseraValida(user, scanner, dd, bd, td, trd, vd, ud);
                         } catch (DateTimeParseException e) {
                             System.out.println("Input non valido, inserisci una data nel formato yyyy-mm-dd");
                         } catch (InvalidInputException e) {
@@ -141,7 +140,7 @@ public class Application {
         emf.close();
     }
 
-    private static void tesseraValida(Utente utente, Scanner scanner, DistributoriDAO dd, BigliettiDAO bd, TesseraDAO td, TrattaDAO trd, ViaggiDAO vd) {
+    private static void tesseraValida(Utente utente, Scanner scanner, DistributoriDAO dd, BigliettiDAO bd, TesseraDAO td, TrattaDAO trd, ViaggiDAO vd, UtenteDAO ud) {
         boolean exitApp = false;
         while (!exitApp) {
             System.out.println("Cosa desideri fare?");
@@ -172,7 +171,7 @@ public class Application {
                     break;
                 }
                 case "2": {
-                    if (td.isAbbonamentoPresent(utente.getTessera().getId()))
+                    if (td.isAbbonamentoPresent(ud.findById(utente.getId()).getTessera().getId()))
                         System.out.println("Abbonamento già presente");
                     else {
                         System.out.println("Elenco distributori disponibili:");
@@ -256,6 +255,132 @@ public class Application {
             System.out.println("Input non valido, inserisci il numero corrispondente");
         }
         return viaggioId;
+    }
+
+    private static void adminMenu(Scanner scanner, BigliettiDAO bd, DistributoriDAO dd, ViaggiDAO vd) {
+        boolean quitAdmin = false;
+        while (!quitAdmin) {
+            System.out.println("Benvenuto admin");
+            System.out.println("Cosa vuoi fare?");
+            System.out.println("1. Visualizza il numero di biglietti emessi in totale");
+            System.out.println("2. Visualizza il numero di biglietti emessi in un range di tempo");
+            System.out.println("3. Visualizza tutti i biglietti emessi da un distributore");
+            System.out.println("4. Controlla l'abbonamento di un passeggero");
+            System.out.println("5. Visualizza il numero di tutti i biglietti vidimati su un mezzo");
+            System.out.println("6. Visualizza il numero di biglietti vidimati in un range di tempo");
+            System.out.println("7. Visualizza il numero di viaggi di un mezzo");
+            System.out.println("8. Calcola il tempo medio effettivo di percorrenza di un mezzo");
+            System.out.println("9. Esci");
+            System.out.println("Digita il numero corrispondente");
+            String opzione = scanner.nextLine();
+            try {
+                switch (opzione) {
+                    case "1": {
+                        System.out.println("Il numero di biglietti e abbonamenti emessi in totale è:");
+                        System.out.println(bd.contaBigliettiTotali());
+                        break;
+                    }
+                    case "2": {
+                        try {
+                            System.out.println("Inserire l'inizio del range in formato yyyy-mm-dd");
+                            LocalDate inizio = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ISO_LOCAL_DATE);
+                            System.out.println("Inserisci la fine del range in formato yyyy-mm-dd");
+                            LocalDate fine = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ISO_LOCAL_DATE);
+                            System.out.println("Il numero di biglietti emessi dal " + inizio + " al " + fine + " è: " + bd.contaBigliettiRangeTempo(inizio, fine));
+                        } catch (DateTimeParseException e) {
+                            System.out.println("Input non valido, inserisci una data nel formato yyyy-mm-dd");
+                        }
+                        break;
+                    }
+                    case "3": {
+                        System.out.println("Elenco distributori disponibili:");
+                        List<Distributore> listaDistributori = dd.getAllDistributors();
+                        for (int i = 0; i < listaDistributori.size(); i++) {
+                            System.out.println(i + 1 + ". " + listaDistributori.get(i).getNome());
+                        }
+                        System.out.println("Digita il numero corrispondente");
+                        try {
+                            int distributore = Integer.parseInt(scanner.nextLine());
+                            for (int i = 1; i <= listaDistributori.size(); i++) {
+                                if (distributore == i)
+                                    System.out.println("Il numero di biglietti emessi dal distributore " + listaDistributori.get(i - 1).getNome() + " è: " + bd.contaBigliettiPerDistributore(listaDistributori.get(i - 1).getId()));
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Input non valido, inserisci il numero corrispondente");
+                        }
+                        break;
+                    }
+                    case "4": {
+                        try {
+                            System.out.println("Inserisci l'id della tessera");
+                            String tesseraId = scanner.nextLine();
+                            System.out.println("Inserisci l'id dell'abbonamento");
+                            String abbonamentoId = scanner.nextLine();
+                            if (bd.isAbbonamentoValido(UUID.fromString(abbonamentoId), UUID.fromString(tesseraId))) {
+                                System.out.println("L'abbonamento è valido");
+                            } else {
+                                System.out.println("L'abbonamento non è valido");
+                            }
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Id non validi");
+                        }
+                        break;
+                    }
+                    case "5": {
+                        System.out.println("Inserisci l'id del mezzo");
+                        try {
+                            String mezzoId = scanner.nextLine();
+                            System.out.println("Il numero di biglietti vidimati sul mezzo con id " + mezzoId + " è: " + bd.contaVidimazioniSuMezzo(UUID.fromString(mezzoId)));
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Id non valido");
+                        }
+                        break;
+                    }
+                    case "6": {
+                        try {
+                            System.out.println("Inserire l'inizio del range in formato yyyy-mm-dd");
+                            LocalDate inizio = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ISO_LOCAL_DATE);
+                            System.out.println("Inserisci la fine del range in formato yyyy-mm-dd");
+                            LocalDate fine = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ISO_LOCAL_DATE);
+                            System.out.println("Il numero di biglietti vidimati dal " + inizio + " al " + fine + " è: " + bd.contaVidimazioniRangeTempo(inizio, fine));
+                        } catch (DateTimeParseException e) {
+                            System.out.println("Input non valido, inserisci una data nel formato yyyy-mm-dd");
+                        }
+                        break;
+                    }
+                    case "7": {
+                        System.out.println("Inserisci l'id del mezzo");
+                        try {
+                            String mezzoId = scanner.nextLine();
+                            System.out.println("Il numero di viaggi del mezzo " + mezzoId + " è: " + vd.contaViaggiPerMezzo(UUID.fromString(mezzoId)));
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Id non valido");
+                        }
+                        break;
+                    }
+                    case "8": {
+                        System.out.println("Inserisci l'id del mezzo");
+                        try {
+                            String mezzoId = scanner.nextLine();
+                            System.out.println("La media dei viaggi effettivi del mezzo " + mezzoId + " è: " + vd.calcolaTempoMedio(UUID.fromString(mezzoId)));
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Id non valido");
+                        }
+                        break;
+                    }
+                    case "9": {
+                        System.out.println("Arrivederci admin!");
+                        quitAdmin = true;
+                        break;
+                    }
+                    default: {
+                        throw new InvalidInputException();
+                    }
+                }
+            } catch (InvalidInputException e) {
+                System.out.println("Input non valido, inserisci il numero corrispondente");
+            }
+        }
     }
 }
 
