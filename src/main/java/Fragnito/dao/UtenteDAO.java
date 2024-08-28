@@ -20,7 +20,7 @@ public class UtenteDAO {
     }
 
 
-    public List<Utente> generaUtenti(int n) {
+    public void generaUtenti(int n) {
         Faker faker = new Faker(new Locale("it"));
 
         List<Utente> utenti = new ArrayList<>();
@@ -28,19 +28,12 @@ public class UtenteDAO {
         for (int i = 0; i < n; i++) {
             Date date = faker.date().birthday(1, 20);
             LocalDate randomLocalDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            Utente newUtente = new Utente(faker.name().firstName(), faker.name().lastName(), randomLocalDate);
-
-            EntityTransaction transaction = em.getTransaction();
-            transaction.begin();
-            em.persist(newUtente);
-            transaction.commit();
+            Utente newUtente = new Utente(faker.name().firstName(), faker.name().lastName(), randomLocalDate, faker.internet().emailAddress(), faker.internet().password());
+            save(newUtente);
             System.out.println("L'utente " + newUtente.getCognome() + " è stato salvato con successo!");
 
             utenti.add(newUtente);
         }
-
-
-        return utenti;
     }
 
     public void save(Utente utente) {
@@ -70,4 +63,10 @@ public class UtenteDAO {
         System.out.println("L'utente " + found.getNome() + " " + found.getCognome() + " è stato eliminato con successo!");
     }
 
+    public Utente login(String email, String password) {
+        return em.createQuery("SELECT Utente u WHERE u.email = :email AND u.password = :password", Utente.class)
+                .setParameter("email", email)
+                .setParameter("password", password)
+                .getSingleResult();
+    }
 }
