@@ -31,6 +31,9 @@ public class Application {
 
         System.out.println(ud.login("mariofragnito@gmail.com", "1234"));
 
+        dd.generateNDistributors(10);
+        
+
         em.close();
         emf.close();
     }
