@@ -14,6 +14,9 @@ public class Distributore {
     private UUID id;
 
     @Column(nullable = false)
+    private String nome;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TipoDistributore tipo;
 
@@ -23,9 +26,18 @@ public class Distributore {
     public Distributore() {
     }
 
-    public Distributore(TipoDistributore tipo, StatoDistributore stato) {
+    public Distributore(String nome, TipoDistributore tipo, StatoDistributore stato) {
+        this.nome = nome;
         this.tipo = tipo;
         this.stato = stato;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public UUID getId() {
@@ -52,6 +64,7 @@ public class Distributore {
     public String toString() {
         return "Distributore{" +
                 "id=" + id +
+                ", nome='" + nome + '\'' +
                 ", tipo=" + tipo +
                 ", stato=" + stato +
                 '}';
