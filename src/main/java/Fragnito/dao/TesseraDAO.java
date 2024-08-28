@@ -27,7 +27,7 @@ public class TesseraDAO {
             transaction.begin();
             UtenteDAO ud = new UtenteDAO(em);
             Utente tesseraOwner = ud.findById(id);
-            Tessera tessera = new Tessera(tesseraOwner, LocalDate.now());
+            Tessera tessera = new Tessera(tesseraOwner, LocalDate.now().minusYears(5));
             em.persist(tessera);
             transaction.commit();
             System.out.println("La tessera " + tessera.getId() + " appartenente a " + tessera.getUtente().getCognome() + " è stata salvata con successo!");

@@ -62,13 +62,35 @@ public class Application {
                             utenteTrovato = true;
                             // Controllo tessera
                             boolean check = td.checkTessera(user.getTessera().getId());
-                            System.out.println(check);
                             if (check) {
                                 tesseraValida(user, scanner, dd, bd, td, trd, vd);
+                            } else {
+                                System.out.println("Tessera scaduta, rinnovare? (10$)");
+                                System.out.println("La tessera è richiesta per viaggiare con EPI-Trasporti.");
+                                System.out.println("1. Sì");
+                                System.out.println("2. Esci");
+                                System.out.println("Premi il numero corrispondente");
+                                String risposta = scanner.nextLine();
+                                switch (risposta) {
+                                    case "1": {
+                                        td.rinnovaTessera(user.getTessera());
+                                        tesseraValida(user, scanner, dd, bd, td, trd, vd);
+                                        break;
+                                    }
+                                    case "2": {
+                                        System.out.println("Arrivederci");
+                                        break;
+                                    }
+                                    default: {
+                                        throw new InvalidInputException();
+                                    }
+                                }
                             }
 
                         } catch (NoResultException e) {
                             System.out.println("Utente non trovato");
+                        } catch (InvalidInputException e) {
+                            System.out.println("Input non valido, non puoi inserire una stringa vuota");
                         }
                     }
                     break;
