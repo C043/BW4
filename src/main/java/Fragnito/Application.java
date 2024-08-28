@@ -1,12 +1,13 @@
 package Fragnito;
 
 import Fragnito.dao.*;
+import Fragnito.entities.Utente;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
+import java.time.LocalDate;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("BW4-Team-5");
@@ -51,7 +52,7 @@ public class Application {
     /*    vd.save(new Viaggio(md.findById(UUID.fromString("80282f3a-4204-4529-ac4c-ee09e1040215")), LocalDate.now(), 130));
         vd.save(new Viaggio(md.findById(UUID.fromString("80282f3a-4204-4529-ac4c-ee09e1040215")), LocalDate.now(), 150));
         vd.save(new Viaggio(md.findById(UUID.fromString("80282f3a-4204-4529-ac4c-ee09e1040215")), LocalDate.now(), 90));*/
-        System.out.println(vd.contaViaggiPerMezzo(UUID.fromString("80282f3a-4204-4529-ac4c-ee09e1040215")));
+        ud.save(new Utente("Mario", "Fragnito", LocalDate.of(1999, 5, 7)));
 
         em.close();
         emf.close();

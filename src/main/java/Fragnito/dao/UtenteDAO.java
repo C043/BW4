@@ -43,11 +43,17 @@ public class UtenteDAO {
         return utenti;
     }
 
-   /* public void save(Utente utente){
+    public void save(Utente utente) {
+        TesseraDAO td = new TesseraDAO(em);
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        em.
-    }*/
+        em.persist(utente);
+        transaction.commit();
+
+        td.save(utente.getId());
+
+        System.out.println("Utente e tessera creati con successo!");
+    }
 
     public Utente findById(UUID id) {
         Utente found = em.find(Utente.class, id);
