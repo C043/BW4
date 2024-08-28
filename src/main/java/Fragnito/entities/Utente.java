@@ -28,6 +28,9 @@ public class Utente {
     @Column(nullable = false)
     private String password;
 
+    @OneToOne(mappedBy = "utente")
+    private Tessera tessera;
+
     public Utente() {
     }
 
@@ -84,6 +87,10 @@ public class Utente {
         this.dataNascita = dataNascita;
     }
 
+    public Tessera getTessera() {
+        return tessera;
+    }
+
     @Override
     public String toString() {
         return "Utente{" +
@@ -93,6 +100,7 @@ public class Utente {
                 ", dataNascita=" + dataNascita +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", tessera=" + tessera.getId() +
                 '}';
     }
 }

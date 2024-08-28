@@ -51,7 +51,6 @@ public class TesseraDAO {
         System.out.println("La tessera " + found.getId() + " appartenente a " + found.getUtente().getCognome() + " è stata eliminata con successo!");
     }
 
-
     public void rinnovaTessera(Tessera tessera) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
@@ -63,6 +62,12 @@ public class TesseraDAO {
         else System.out.println("Tessera rinnovata con successo!");
     }
 
+    public boolean checkTessera(UUID tesseraId) {
+        return em.createQuery("SELECT COUNT(t) FROM Tessera t WHERE t.dataScadenza > :oggi AND t.id = :tesseraId", Long.class)
+                .setParameter("oggi", LocalDate.now())
+                .setParameter("tesseraId", tesseraId)
+                .getSingleResult() > 0;
+    }
 
     public List<Tessera> associaUtente(List<Utente> utenti) {
 
