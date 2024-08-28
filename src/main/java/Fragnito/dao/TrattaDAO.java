@@ -1,5 +1,6 @@
 package Fragnito.dao;
 
+import Fragnito.entities.Mezzo;
 import Fragnito.entities.Tratta;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,18 +16,22 @@ public class TrattaDAO {
         this.em = em;
     }
 
-    public void save(Tratta tratta
-    ) {
+    public void save(Tratta tratta) {
+        MezziDAO md = new MezziDAO(em);
         try {
             EntityTransaction transaction = em.getTransaction();
             transaction.begin();
             em.persist(tratta);
             transaction.commit();
             System.out.println("Tratta n. " + tratta.getId() + " aggiunta con successo!");
+            // WIP
+            md.save(new Mezzo());
         } catch (TransactionalException te) {
             System.err.println(te.getMessage());
         }
     }
+
+    public void generateNTratte
 
     public Tratta findById(UUID id) {
         Tratta tratta = em.find(Tratta.class, id);
