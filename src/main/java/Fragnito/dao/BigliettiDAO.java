@@ -77,11 +77,28 @@ public class BigliettiDAO {
         return ((Number) em.createQuery("SELECT COUNT(b) FROM Timbrabile b").getSingleResult()).intValue();
     }
 
-    public Number contaBigliettiPerDistributore(UUID distributoreId) {
-        return ((Number) em.createQuery("SELECT COUNT(b) FROM Timbrabile b WHERE b.distributore.id = :id").setParameter("id", distributoreId).getSingleResult()).intValue();
+    public Integer contaBigliettiPerDistributore(UUID distributoreId) {
+        return em.createQuery("SELECT COUNT(b) FROM Timbrabile b WHERE b.distributore.id = :id", int.class)
+                .setParameter("id", distributoreId)
+                .getSingleResult();
     }
 
     public Number contaBigliettiRangeTempo(LocalDate start, LocalDate end) {
         return ((Number) em.createQuery("SELECT COUNT(b) FROM Timbrabile b WHERE b.dataEmissione BETWEEN :startDate AND :endDate").setParameter("startDate", start).setParameter("endDate", end).getSingleResult()).intValue();
+    }
+
+    public boolean isAbbonamentoValido(UUID numeroTessera, UUID abbonamentoId) {
+        LocalDate oggi = LocalDate.now();
+
+        Long query = em.createQuery(
+                        "SELECT COUNT(a) FROM Abbonamento a " +
+                                "WHERE a.tessera.id = :numeroTessera " +
+                                "AND a.id = :abbonamentoId " +
+                                "AND a.dataScadenza >= :oggi", Long.class)
+                .setParameter("numeroTessera", numeroTessera)
+                .setParameter("oggi", oggi)
+                .setParameter("abbonamentoId", abbonamentoId)
+                .getSingleResult();
+        return query > 0;
     }
 }

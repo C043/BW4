@@ -31,7 +31,9 @@ public class TrattaDAO {
         }
     }
 
+/*
     public void generateNTratte
+*/
 
     public Tratta findById(UUID id) {
         Tratta tratta = em.find(Tratta.class, id);
