@@ -32,11 +32,10 @@ public class DistributoriDAO {
         }
     }
 
-    public void saveDistributore(TipoDistributore tipo, StatoDistributore stato) {
-        Faker faker = new Faker();
+    public void saveDistributore(Distributore distributore) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        em.persist(new Distributore(faker.address().fullAddress(), tipo, stato));
+        em.persist(distributore);
         transaction.commit();
         System.out.println("Distributore aggiunto con successo!");
     }
