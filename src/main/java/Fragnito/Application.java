@@ -322,7 +322,7 @@ public class Application {
                             String tesseraId = scanner.nextLine();
                             System.out.println("Inserisci l'id dell'abbonamento");
                             String abbonamentoId = scanner.nextLine();
-                            if (bd.isAbbonamentoValido(UUID.fromString(abbonamentoId), UUID.fromString(tesseraId))) {
+                            if (bd.isAbbonamentoValido(UUID.fromString(tesseraId), UUID.fromString(abbonamentoId))) {
                                 System.out.println("L'abbonamento è valido");
                             } else {
                                 System.out.println("L'abbonamento non è valido");
