@@ -3,6 +3,7 @@ package Fragnito;
 import Fragnito.dao.*;
 import Fragnito.entities.*;
 import Fragnito.enumClass.PeriodoAbbonamento;
+import Fragnito.enumClass.TipoMezzo;
 import Fragnito.exceptions.EmailAlreadyExistException;
 import Fragnito.exceptions.InvalidInputException;
 import jakarta.persistence.EntityManager;
@@ -51,7 +52,7 @@ public class Application {
                     System.out.println("Login:");
                     System.out.println("Inserisci la tua email");
                     String email = scanner.nextLine();
-                    if (Objects.equals(email, "mellon")) adminMenu(scanner, bd, dd, vd);
+                    if (Objects.equals(email, "mellon")) adminMenu(scanner, bd, dd, vd, trd);
                     else {
                         System.out.println("Inserisci la tua password");
                         String password = scanner.nextLine();
@@ -262,7 +263,7 @@ public class Application {
         return viaggioId;
     }
 
-    private static void adminMenu(Scanner scanner, BigliettiDAO bd, DistributoriDAO dd, ViaggiDAO vd) {
+    private static void adminMenu(Scanner scanner, BigliettiDAO bd, DistributoriDAO dd, ViaggiDAO vd, TrattaDAO trd) {
         boolean quitAdmin = false;
         while (!quitAdmin) {
             System.out.println("Benvenuto admin");
@@ -375,7 +376,7 @@ public class Application {
                         break;
                     }
                     case "9": {
-                        creationMenu(scanner);
+                        creationMenu(scanner, trd);
                         break;
                     }
                     case "10": {
@@ -393,7 +394,7 @@ public class Application {
         }
     }
 
-    public static void creationMenu(Scanner scanner, TrattaDAO trd) {
+    public static void creationMenu(Scanner scanner, TrattaDAO trd, MezziDAO md) {
         boolean quitCreation = false;
         while (!quitCreation) {
             System.out.println("Quale entità vuoi creare?");
@@ -406,6 +407,30 @@ public class Application {
             String opzione = scanner.nextLine();
             try {
                 switch (opzione) {
+                    case "3": {
+                        System.out.println("Selezione il tipo di mezzo");
+                        System.out.println("1. TRAM");
+                        System.out.println("2. BUS");
+                        System.out.println("Digita il numero corrispondente");
+                        TipoMezzo tipoMezzo = TipoMezzo.TRAM;
+                        String inputTipoMezzo = scanner.nextLine();
+                        if (Objects.equals(inputTipoMezzo, "2")) tipoMezzo = TipoMezzo.BUS;
+                        if (!Objects.equals(inputTipoMezzo, "1") && !Objects.equals(inputTipoMezzo, "2"))
+                            throw new InvalidInputException();
+                        System.out.println("Seleziona la tratta a cui associare il mezzo");
+                        System.out.println("Elenco tratte disponibili:");
+                        List<Tratta> listaTratte = trd.getAllTratte();
+                        for (int i = 0; i < listaTratte.size(); i++) {
+                            System.out.println(i + 1 + ". Partenza: " + listaTratte.get(i).getPartenza() + "Capolinea: " + listaTratte.get(i).getCapolinea());
+                        }
+                        System.out.println("Digita il numero corrispondente");
+                        int tratta = Integer.parseInt(scanner.nextLine());
+                        for (int i = 1; i <= listaTratte.size(); i++) {
+                            if (tratta == i)
+                                md.save(new Mezzo(tipoMezzo, listaTratte.get(i - 1)));
+                        }
+                        break;
+                    }
                     case "4": {
                         System.out.println("Inserisci la fermata di partenza");
                         String partenza = scanner.nextLine();
@@ -424,7 +449,7 @@ public class Application {
                         throw new InvalidInputException();
                     }
                 }
-            } catch (InvalidInputException e) {
+            } catch (InvalidInputException | NumberFormatException e) {
                 System.out.println("Input non valido, inserisci il numero corrispondente");
             }
         }
