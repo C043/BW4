@@ -5,7 +5,6 @@ import Fragnito.entities.*;
 import Fragnito.enumClass.PeriodoAbbonamento;
 import Fragnito.exceptions.EmailAlreadyExistException;
 import Fragnito.exceptions.InvalidInputException;
-import com.github.javafaker.Faker;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
@@ -20,7 +19,6 @@ public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("BW4-Team-5");
 
     public static void main(String[] args) {
-        Faker faker = new Faker();
         Scanner scanner = new Scanner(System.in);
 
         EntityManager em = emf.createEntityManager();
@@ -58,12 +56,13 @@ public class Application {
                         System.out.println("Inserisci la tua password");
                         String password = scanner.nextLine();
                         try {
-                            Utente user = ud.login(email, password);
-                            System.out.println(user);
+                            Utente utente = ud.login(email, password);
+                            Tessera tessera = td.getTesseraByUtente(utente.getId());
+                            System.out.println(utente);
                             // Controllo tessera
-                            boolean check = td.checkTessera(td.getTesseraByUtente(user.getId()).getId());
+                            boolean check = td.checkTessera(tessera.getId());
                             if (check) {
-                                tesseraValida(user, scanner, dd, bd, td, trd, vd, ud);
+                                tesseraValida(utente, scanner, dd, bd, td, trd, vd, ud);
                             } else {
                                 System.out.println("Tessera scaduta, rinnovare? (10$)");
                                 System.out.println("La tessera è richiesta per viaggiare con EPI-Trasporti.");
@@ -73,8 +72,8 @@ public class Application {
                                 String risposta = scanner.nextLine();
                                 switch (risposta) {
                                     case "1": {
-                                        td.rinnovaTessera(user.getTessera());
-                                        tesseraValida(user, scanner, dd, bd, td, trd, vd, ud);
+                                        td.rinnovaTessera(utente.getTessera());
+                                        tesseraValida(utente, scanner, dd, bd, td, trd, vd, ud);
                                         break;
                                     }
                                     case "2": {
@@ -115,9 +114,9 @@ public class Application {
                             System.out.println("Inserisci la tua password");
                             String password = scanner.nextLine();
                             if (Objects.equals(password, "")) throw new InvalidInputException();
-                            Utente user = new Utente(nome, cognome, dataNascita, email, password);
-                            ud.save(user);
-                            tesseraValida(ud.findById(user.getId()), scanner, dd, bd, td, trd, vd, ud);
+                            Utente utente = new Utente(nome, cognome, dataNascita, email, password);
+                            ud.save(utente);
+                            tesseraValida(ud.findById(utente.getId()), scanner, dd, bd, td, trd, vd, ud);
                         } catch (DateTimeParseException e) {
                             System.out.println("Input non valido, inserisci una data nel formato yyyy-mm-dd");
                         } catch (InvalidInputException e) {
@@ -168,7 +167,7 @@ public class Application {
                         int distributore = Integer.parseInt(scanner.nextLine());
                         for (int i = 1; i <= listaDistributori.size(); i++) {
                             if (distributore == i)
-                                bd.save(new Biglietto(listaDistributori.get(i - 1), td.getTesseraByUtente(utente.getId())));
+                                bd.save(new Biglietto(listaDistributori.get(i - 1), tessera));
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Input non valido, inserisci il numero corrispondente");
@@ -207,10 +206,10 @@ public class Application {
                     break;
                 }
                 case "3": {
-                    if (td.isAbbonamentoPresent(td.getTesseraByUtente(utente.getId()).getId())) {
+                    if (td.isAbbonamentoPresent(tessera.getId())) {
                         viaggia(scanner, trd, vd);
                         System.out.println("Buon viaggio!");
-                    } else if (!bd.getBigliettiNonVidimati(td.getTesseraByUtente(utente.getId()).getId()).isEmpty()) {
+                    } else if (!bd.getBigliettiNonVidimati(tessera.getId()).isEmpty()) {
                         UUID viaggioID = viaggia(scanner, trd, vd);
                         bd.vidimaBiglietto(bd.getBigliettiNonVidimati(tessera.getId()).getFirst().getId(), vd.getViaggioById(viaggioID));
                         System.out.println("Buon viaggio!");

@@ -64,8 +64,8 @@ public class Distributore {
     public String toString() {
         return "Distributore: " +
                 "id =" + id +
-                ", nome ='" + nome + '\'' +
-                ", tipo =" + tipo +
-                ", stato =" + stato;
+                ", nome = '" + nome + '\'' +
+                ", tipo = " + tipo +
+                ", stato = " + stato;
     }
 }

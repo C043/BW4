@@ -76,10 +76,10 @@ public class Tessera {
     public String toString() {
         return "Tessera: " +
                 "id =" + id +
-                ", utente =" + utente +
-                ", biglietti =" + biglietti +
-                ", data emissione =" + dataEmissione +
-                ", data scadenza =" + dataScadenza;
+                ", utente = " + utente +
+                ", biglietti = " + biglietti +
+                ", data emissione = " + dataEmissione +
+                ", data scadenza = " + dataScadenza;
     }
 }
 

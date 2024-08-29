@@ -40,8 +40,8 @@ public class Biglietto extends Timbrabile {
     @Override
     public String toString() {
         return "Biglietto: " +
-                "data vidimazione =" + dataVidimazione +
-                ", viaggio =" + viaggio +
+                "data vidimazione = " + dataVidimazione +
+                ", viaggio = " + viaggio +
                 " " + super.toString();
     }
 }

@@ -62,9 +62,9 @@ public class Viaggio {
     @Override
     public String toString() {
         return "Viaggio: " +
-                "id =" + id +
-                ", mezzo =" + mezzo.getId() +
-                ", giorno =" + giorno +
-                ", tempo effettivo =" + tempoEffettivo;
+                "id = " + id +
+                ", mezzo = " + mezzo.getId() +
+                ", giorno = " + giorno +
+                ", tempo effettivo = " + tempoEffettivo;
     }
 }

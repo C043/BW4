@@ -135,9 +135,9 @@ public class Mezzo {
     public String toString() {
         return "Mezzo: " +
                 "id =" + id +
-                ", tipo mezzo =" + tipoMezzo +
-                ", capacita =" + capacita +
-                ", stato mezzo =" + statoMezzo +
-                ", manutenzioni =" + manutenzioni;
+                ", tipo mezzo = " + tipoMezzo +
+                ", capacita = " + capacita +
+                ", stato mezzo = " + statoMezzo +
+                ", manutenzioni = " + manutenzioni;
     }
 }

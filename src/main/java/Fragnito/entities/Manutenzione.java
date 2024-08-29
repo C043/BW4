@@ -88,10 +88,10 @@ public class Manutenzione {
     public String toString() {
         return "Maintenance: " +
                 "id =" + id +
-                ", data inizio =" + dataInizio +
-                ", data fine=" + dataFine +
-                ", motivo ='" + motivo + '\'' +
-                ", veicolo =" + mezzo.getId();
+                ", data inizio = " + dataInizio +
+                ", data fine= " + dataFine +
+                ", motivo = '" + motivo + '\'' +
+                ", veicolo = " + mezzo.getId();
     }
 
 }
