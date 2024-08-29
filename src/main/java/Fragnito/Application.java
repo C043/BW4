@@ -275,7 +275,8 @@ public class Application {
             System.out.println("6. Visualizza il numero di biglietti vidimati in un range di tempo");
             System.out.println("7. Visualizza il numero di viaggi di un mezzo");
             System.out.println("8. Calcola il tempo medio effettivo di percorrenza di un mezzo");
-            System.out.println("9. Esci");
+            System.out.println("9. Crea un entità");
+            System.out.println("10. Esci");
             System.out.println("Digita il numero corrispondente");
             String opzione = scanner.nextLine();
             try {
@@ -374,8 +375,49 @@ public class Application {
                         break;
                     }
                     case "9": {
+                        creationMenu(scanner);
+                        break;
+                    }
+                    case "10": {
                         System.out.println("Arrivederci admin!");
                         quitAdmin = true;
+                        break;
+                    }
+                    default: {
+                        throw new InvalidInputException();
+                    }
+                }
+            } catch (InvalidInputException e) {
+                System.out.println("Input non valido, inserisci il numero corrispondente");
+            }
+        }
+    }
+
+    public static void creationMenu(Scanner scanner, TrattaDAO trd) {
+        boolean quitCreation = false;
+        while (!quitCreation) {
+            System.out.println("Quale entità vuoi creare?");
+            System.out.println("1. Distributore");
+            System.out.println("2. Utente");
+            System.out.println("3. Mezzo");
+            System.out.println("4. Tratta");
+            System.out.println("5. esci");
+            System.out.println("Digita il numero corrispondente");
+            String opzione = scanner.nextLine();
+            try {
+                switch (opzione) {
+                    case "4": {
+                        System.out.println("Inserisci la fermata di partenza");
+                        String partenza = scanner.nextLine();
+                        System.out.println("Inserisci il capolinea");
+                        String capolinea = scanner.nextLine();
+                        System.out.println("Inserisci il tempo previsto");
+                        int tempoPrevisto = Integer.parseInt(scanner.nextLine());
+                        trd.save(new Tratta(partenza, capolinea, tempoPrevisto));
+                        break;
+                    }
+                    case "5": {
+                        quitCreation = true;
                         break;
                     }
                     default: {
