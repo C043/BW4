@@ -378,7 +378,7 @@ public class Application {
                         break;
                     }
                     case "9": {
-                        creationMenu(scanner, trd, md, ud);
+                        creationMenu(scanner, trd, md, ud, dd);
                         break;
                     }
                     case "10": {
@@ -423,6 +423,7 @@ public class Application {
                         if (!Objects.equals(inputTipoMezzo, "1") && !Objects.equals(inputTipoMezzo, "2"))
                             throw new InvalidInputException();
                         dd.saveDistributore(new Distributore(nome, tipoDistributore, StatoDistributore.ATTIVO));
+                        break;
                     }
                     case "2": {
                         System.out.println("Inserisci il nome utente");
@@ -467,7 +468,7 @@ public class Application {
                         System.out.println("Elenco tratte disponibili:");
                         List<Tratta> listaTratte = trd.getAllTratte();
                         for (int i = 0; i < listaTratte.size(); i++) {
-                            System.out.println(i + 1 + ". Partenza: " + listaTratte.get(i).getPartenza() + "Capolinea: " + listaTratte.get(i).getCapolinea());
+                            System.out.println(i + 1 + ". Partenza: " + listaTratte.get(i).getPartenza() + " Capolinea: " + listaTratte.get(i).getCapolinea());
                         }
                         System.out.println("Digita il numero corrispondente");
                         int tratta = Integer.parseInt(scanner.nextLine());
