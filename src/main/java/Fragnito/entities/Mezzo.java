@@ -113,24 +113,6 @@ public class Mezzo {
         this.viaggi = viaggi;
     }
 
-/*
-    public int getNumeroGiri() {
-        return numeroGiri;
-    }
-
-    public void setNumeroGiri(int numeroGiri) {
-        this.numeroGiri = numeroGiri;
-    }
-*/
-
-/*    public double getMediaTempoEffettivo() {
-        return mediaTempoEffettivo;
-    }
-
-    public void setMediaTempoEffettivo(double mediaTempoEffettivo) {
-        this.mediaTempoEffettivo = mediaTempoEffettivo;
-    }*/
-
     @Override
     public String toString() {
         return "Mezzo: " +
