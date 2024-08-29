@@ -61,7 +61,7 @@ public class Application {
                             Utente user = ud.login(email, password);
                             System.out.println(user);
                             // Controllo tessera
-                            boolean check = td.checkTessera(user.getTessera().getId());
+                            boolean check = td.checkTessera(td.getTesseraByUtente(user.getId()).getId());
                             if (check) {
                                 tesseraValida(user, scanner, dd, bd, td, trd, vd, ud);
                             } else {
