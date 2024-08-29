@@ -86,13 +86,12 @@ public class Manutenzione {
 
     @Override
     public String toString() {
-        return "Maintenance{" +
-                "id=" + id +
-                ", dataInizio=" + dataInizio +
-                ", dataFine=" + dataFine +
-                ", motivo='" + motivo + '\'' +
-                ", veicolo=" + mezzo.getId() +
-                '}';
+        return "Maintenance: " +
+                "id =" + id +
+                ", data inizio =" + dataInizio +
+                ", data fine=" + dataFine +
+                ", motivo ='" + motivo + '\'' +
+                ", veicolo =" + mezzo.getId();
     }
 
 }

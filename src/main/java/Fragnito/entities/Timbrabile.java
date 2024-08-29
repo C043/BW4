@@ -65,11 +65,10 @@ public abstract class Timbrabile {
 
     @Override
     public String toString() {
-        return "Timbrabile{" +
-                "id=" + id +
-                ", tessera=" + tessera.getUtente() +
-                ", dataEmissione=" + dataEmissione +
-                ", distributore=" + distributore +
-                '}';
+        return "Timbrabile: " +
+                "id =" + id +
+                ", tessera =" + tessera.getUtente() +
+                ", data emissione =" + dataEmissione +
+                ", distributore =" + distributore;
     }
 }

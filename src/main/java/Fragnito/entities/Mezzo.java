@@ -133,16 +133,11 @@ public class Mezzo {
 
     @Override
     public String toString() {
-        return "Mezzo {" +
-                "id=" + id +
-                ", tipoMezzo=" + tipoMezzo +
-                ", capacita=" + capacita +
-                ", statoMezzo=" + statoMezzo +
-                /*             ", numeroGiri=" + numeroGiri +*/
-                ", manutenzioni=" + manutenzioni +
-/*
-                ", mediaTempoEffettivo=" + mediaTempoEffettivo +
-*/
-                '}';
+        return "Mezzo: " +
+                "id =" + id +
+                ", tipo mezzo =" + tipoMezzo +
+                ", capacita =" + capacita +
+                ", stato mezzo =" + statoMezzo +
+                ", manutenzioni =" + manutenzioni;
     }
 }

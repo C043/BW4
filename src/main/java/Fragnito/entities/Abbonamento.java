@@ -45,9 +45,9 @@ public class Abbonamento extends Timbrabile {
 
     @Override
     public String toString() {
-        return "Abbonamento{" +
-                "dataScadenza=" + dataScadenza +
-                ", periodoAbbonamento=" + periodoAbbonamento +
-                "} " + super.toString();
+        return "Abbonamento: " +
+                "data scadenza =" + dataScadenza +
+                ", periodo abbonamento =" + periodoAbbonamento +
+                " " + super.toString();
     }
 }

@@ -62,11 +62,10 @@ public class Distributore {
 
     @Override
     public String toString() {
-        return "Distributore{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", tipo=" + tipo +
-                ", stato=" + stato +
-                '}';
+        return "Distributore: " +
+                "id =" + id +
+                ", nome ='" + nome + '\'' +
+                ", tipo =" + tipo +
+                ", stato =" + stato;
     }
 }
