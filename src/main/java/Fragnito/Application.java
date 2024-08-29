@@ -52,7 +52,7 @@ public class Application {
                     System.out.println("Login:");
                     System.out.println("Inserisci la tua email");
                     String email = scanner.nextLine();
-                    if (Objects.equals(email, "mellon")) adminMenu(scanner, bd, dd, vd, trd);
+                    if (Objects.equals(email, "mellon")) adminMenu(scanner, bd, dd, vd, trd, md);
                     else {
                         System.out.println("Inserisci la tua password");
                         String password = scanner.nextLine();
@@ -263,7 +263,7 @@ public class Application {
         return viaggioId;
     }
 
-    private static void adminMenu(Scanner scanner, BigliettiDAO bd, DistributoriDAO dd, ViaggiDAO vd, TrattaDAO trd) {
+    private static void adminMenu(Scanner scanner, BigliettiDAO bd, DistributoriDAO dd, ViaggiDAO vd, TrattaDAO trd, MezziDAO md) {
         boolean quitAdmin = false;
         while (!quitAdmin) {
             System.out.println("Benvenuto admin");
@@ -376,7 +376,7 @@ public class Application {
                         break;
                     }
                     case "9": {
-                        creationMenu(scanner, trd);
+                        creationMenu(scanner, trd, md);
                         break;
                     }
                     case "10": {
