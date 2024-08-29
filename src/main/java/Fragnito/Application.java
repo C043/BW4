@@ -35,7 +35,7 @@ public class Application {
         BigliettiDAO bd = new BigliettiDAO(em);
         ViaggiDAO vd = new ViaggiDAO(em);
 
-     /*   trd.generateNTratte(5);
+        /*trd.generateNTratte(5);
         dd.generateNDistributors(5);*/
 
 
@@ -278,7 +278,7 @@ public class Application {
             System.out.println("6. Visualizza il numero di biglietti vidimati in un range di tempo");
             System.out.println("7. Visualizza il numero di viaggi di un mezzo");
             System.out.println("8. Calcola il tempo medio effettivo di percorrenza di un mezzo");
-            System.out.println("9. Crea un entità");
+            System.out.println("9. Crea un'entità");
             System.out.println("10. Esci");
             System.out.println("Digita il numero corrispondente");
             String opzione = scanner.nextLine();
@@ -495,6 +495,47 @@ public class Application {
                     default: {
                         throw new InvalidInputException();
                     }
+                }
+            } catch (InvalidInputException | NumberFormatException e) {
+                System.out.println("Input non valido, inserisci il numero corrispondente");
+            }
+        }
+    }
+
+    public static void deleteMenu(Scanner scanner, TrattaDAO trd, MezziDAO md, UtenteDAO ud, DistributoriDAO dd) {
+        boolean quitDelete = false;
+        while (!quitDelete) {
+            System.out.println("Quale entità vuoi creare?");
+            System.out.println("1. Distributore");
+            System.out.println("2. Utente");
+            System.out.println("3. Mezzo");
+            System.out.println("4. Tratta");
+            System.out.println("5. esci");
+            System.out.println("Digita il numero corrispondente");
+            String opzione = scanner.nextLine();
+            try {
+                switch (opzione) {
+                    case "4": {
+                        System.out.println("Seleziona la tratta da eliminare");
+                        System.out.println("Elenco tratte disponibili:");
+                        List<Tratta> listaTratte = trd.getAllTratte();
+                        for (int i = 0; i < listaTratte.size(); i++) {
+                            System.out.println(i + 1 + ". Partenza: " + listaTratte.get(i).getPartenza() + " Capolinea: " + listaTratte.get(i).getCapolinea());
+                        }
+                        System.out.println("Digita il numero corrispondente");
+                        int tratta = Integer.parseInt(scanner.nextLine());
+                        for (int i = 1; i <= listaTratte.size(); i++) {
+                            if (tratta == i)
+                                trd.deleteById(listaTratte.get(i - 1).getId());
+                        }
+                        break;
+                    }
+                    case "5": {
+                        quitDelete = true;
+                        break;
+                    }
+                    default:
+                        throw new InvalidInputException();
                 }
             } catch (InvalidInputException | NumberFormatException e) {
                 System.out.println("Input non valido, inserisci il numero corrispondente");
