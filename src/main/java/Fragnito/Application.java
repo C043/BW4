@@ -52,7 +52,7 @@ public class Application {
                     System.out.println("Login:");
                     System.out.println("Inserisci la tua email");
                     String email = scanner.nextLine();
-                    if (Objects.equals(email, "mellon")) adminMenu(scanner, bd, dd, vd, trd, md);
+                    if (Objects.equals(email, "mellon")) adminMenu(scanner, bd, dd, vd, trd, md, ud);
                     else {
                         System.out.println("Inserisci la tua password");
                         String password = scanner.nextLine();
@@ -263,7 +263,7 @@ public class Application {
         return viaggioId;
     }
 
-    private static void adminMenu(Scanner scanner, BigliettiDAO bd, DistributoriDAO dd, ViaggiDAO vd, TrattaDAO trd, MezziDAO md) {
+    private static void adminMenu(Scanner scanner, BigliettiDAO bd, DistributoriDAO dd, ViaggiDAO vd, TrattaDAO trd, MezziDAO md, UtenteDAO ud) {
         boolean quitAdmin = false;
         while (!quitAdmin) {
             System.out.println("Benvenuto admin");
@@ -376,7 +376,7 @@ public class Application {
                         break;
                     }
                     case "9": {
-                        creationMenu(scanner, trd, md);
+                        creationMenu(scanner, trd, md, ud);
                         break;
                     }
                     case "10": {
@@ -394,7 +394,7 @@ public class Application {
         }
     }
 
-    public static void creationMenu(Scanner scanner, TrattaDAO trd, MezziDAO md) {
+    public static void creationMenu(Scanner scanner, TrattaDAO trd, MezziDAO md, UtenteDAO ud) {
         boolean quitCreation = false;
         while (!quitCreation) {
             System.out.println("Quale entità vuoi creare?");
@@ -407,6 +407,38 @@ public class Application {
             String opzione = scanner.nextLine();
             try {
                 switch (opzione) {
+                    case "1": {
+                        
+                    }
+                    case "2": {
+                        System.out.println("Inserisci il nome utente");
+                        String nome = scanner.nextLine();
+                        System.out.println("Inserisci il cognome utente");
+                        String cognome = scanner.nextLine();
+                        boolean inputValido = false;
+                        while (!inputValido) {
+                            System.out.println("Inserisci la data di nascita utente in formato yyyy-mm-dd");
+                            try {
+                                LocalDate dataNascita = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ISO_LOCAL_DATE);
+                                inputValido = true;
+                                System.out.println("Inserisci l'email utente");
+                                String email = scanner.nextLine();
+                                if (ud.checkUtente(email)) throw new EmailAlreadyExistException();
+                                if (Objects.equals(email, "")) throw new InvalidInputException();
+                                System.out.println("Inserisci la password utente");
+                                String password = scanner.nextLine();
+                                if (Objects.equals(password, "")) throw new InvalidInputException();
+                                ud.save(new Utente(nome, cognome, dataNascita, email, password));
+                            } catch (DateTimeParseException e) {
+                                System.out.println("Input non valido, inserisci una data nel formato yyyy-mm-dd");
+                            } catch (InvalidInputException e) {
+                                System.out.println("Input non valido, non puoi inserire una stringa vuota");
+                            } catch (EmailAlreadyExistException e) {
+                                System.out.println("Email già registrata, inseriscine un'altra");
+                            }
+                        }
+                        break;
+                    }
                     case "3": {
                         System.out.println("Selezione il tipo di mezzo");
                         System.out.println("1. TRAM");
