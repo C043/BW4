@@ -43,6 +43,13 @@ public class BigliettiDAO {
                 && found.getTessera().getId().equals(id);
     }
 
+    public List<Abbonamento> getAbbonamentoByTessera(UUID tesseraId) {
+        return em.createQuery("SELECT a FROM Abbonamento a WHERE a.tessera.id = :tesseraId AND a.dataScadenza > :oggi", Abbonamento.class)
+                .setParameter("tesseraId", tesseraId)
+                .setParameter("oggi", LocalDate.now())
+                .getResultList();
+    }
+
 
     public void delete(UUID id) {
         Timbrabile found = getBigliettoById(id);

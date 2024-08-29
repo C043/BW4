@@ -155,6 +155,7 @@ public class Application {
             System.out.println("5. Esci");
             System.out.println("Premi il numero corrispondente");
             String opzione = scanner.nextLine();
+            Tessera tessera = td.getTesseraByUtente(utente.getId());
             switch (opzione) {
                 case "1": {
                     System.out.println("Elenco distributori disponibili:");
@@ -167,7 +168,7 @@ public class Application {
                         int distributore = Integer.parseInt(scanner.nextLine());
                         for (int i = 1; i <= listaDistributori.size(); i++) {
                             if (distributore == i)
-                                bd.save(new Biglietto(listaDistributori.get(i - 1), utente.getTessera()));
+                                bd.save(new Biglietto(listaDistributori.get(i - 1), td.getTesseraByUtente(utente.getId())));
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Input non valido, inserisci il numero corrispondente");
@@ -175,7 +176,7 @@ public class Application {
                     break;
                 }
                 case "2": {
-                    if (td.isAbbonamentoPresent(ud.findById(utente.getId()).getTessera().getId()))
+                    if (td.isAbbonamentoPresent(tessera.getId()))
                         System.out.println("Abbonamento già presente");
                     else {
                         System.out.println("Elenco distributori disponibili:");
@@ -197,7 +198,7 @@ public class Application {
                                 throw new InvalidInputException();
                             for (int i = 1; i <= listaDistributori.size(); i++) {
                                 if (distributore == i)
-                                    bd.save(new Abbonamento(listaDistributori.get(i - 1), utente.getTessera(), periodo));
+                                    bd.save(new Abbonamento(listaDistributori.get(i - 1), tessera, periodo));
                             }
                         } catch (NumberFormatException | InvalidInputException e) {
                             System.out.println("Input non valido, inserisci il numero corrispondente");
@@ -211,7 +212,7 @@ public class Application {
                         System.out.println("Buon viaggio!");
                     } else if (!bd.getBigliettiNonVidimati(td.getTesseraByUtente(utente.getId()).getId()).isEmpty()) {
                         UUID viaggioID = viaggia(scanner, trd, vd);
-                        bd.vidimaBiglietto(bd.getBigliettiNonVidimati(utente.getTessera().getId()).getFirst().getId(), vd.getViaggioById(viaggioID));
+                        bd.vidimaBiglietto(bd.getBigliettiNonVidimati(tessera.getId()).getFirst().getId(), vd.getViaggioById(viaggioID));
                         System.out.println("Buon viaggio!");
                     } else
                         System.out.println("Nessun biglietto o abbonamento disponibile sulla tessera, comprane uno prima");
@@ -219,8 +220,9 @@ public class Application {
                 }
                 case "4": {
                     System.out.println("Ecco la tua tessera:");
-                    System.out.println(utente.getTessera());
-                    utente.getTessera().getBiglietti().forEach(System.out::println);
+                    System.out.println(tessera);
+                    bd.getAbbonamentoByTessera(tessera.getId()).forEach(System.out::println);
+                    bd.getBigliettiNonVidimati(tessera.getId()).forEach(System.out::println);
                     break;
                 }
                 case "5": {

@@ -16,7 +16,7 @@ public abstract class Timbrabile {
 
     // Creare il many to one alle tessere e rifare i getter setter i toString e i constructor
     @ManyToOne
-    @JoinColumn(name = "tessera_id")
+    @JoinColumn(name = "tessera_id", nullable = false)
     private Tessera tessera;
 
     @Column(name = "data_emissione", nullable = false)

@@ -99,8 +99,6 @@ public class Utente {
                 ", cognome='" + cognome + '\'' +
                 ", dataNascita=" + dataNascita +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", tessera=" + tessera.getId() +
                 '}';
     }
 }
