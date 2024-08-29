@@ -3,6 +3,8 @@ package Fragnito;
 import Fragnito.dao.*;
 import Fragnito.entities.*;
 import Fragnito.enumClass.PeriodoAbbonamento;
+import Fragnito.enumClass.StatoDistributore;
+import Fragnito.enumClass.TipoDistributore;
 import Fragnito.enumClass.TipoMezzo;
 import Fragnito.exceptions.EmailAlreadyExistException;
 import Fragnito.exceptions.InvalidInputException;
@@ -394,7 +396,7 @@ public class Application {
         }
     }
 
-    public static void creationMenu(Scanner scanner, TrattaDAO trd, MezziDAO md, UtenteDAO ud) {
+    public static void creationMenu(Scanner scanner, TrattaDAO trd, MezziDAO md, UtenteDAO ud, DistributoriDAO dd) {
         boolean quitCreation = false;
         while (!quitCreation) {
             System.out.println("Quale entità vuoi creare?");
@@ -408,7 +410,19 @@ public class Application {
             try {
                 switch (opzione) {
                     case "1": {
-                        
+                        System.out.println("Inserisci il nome del rivenditore");
+                        String nome = scanner.nextLine();
+                        System.out.println("Seleziona il tipo di rivenditore");
+                        System.out.println("1. DISTRIBUTORE AUTOMATICO");
+                        System.out.println("2. RIVENDITORE AUTORIZZATO");
+                        System.out.println("Digita il numero corrispondente");
+                        TipoDistributore tipoDistributore = TipoDistributore.DISTRIBUTORE_AUTOMATICO;
+                        String inputTipoMezzo = scanner.nextLine();
+                        if (Objects.equals(inputTipoMezzo, "2"))
+                            tipoDistributore = TipoDistributore.RIVENDITORE_AUTORIZZATO;
+                        if (!Objects.equals(inputTipoMezzo, "1") && !Objects.equals(inputTipoMezzo, "2"))
+                            throw new InvalidInputException();
+                        dd.saveDistributore(new Distributore(nome, tipoDistributore, StatoDistributore.ATTIVO));
                     }
                     case "2": {
                         System.out.println("Inserisci il nome utente");
