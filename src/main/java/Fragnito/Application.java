@@ -165,6 +165,8 @@ public class Application {
                     System.out.println("Digita il numero corrispondente");
                     try {
                         int distributore = Integer.parseInt(scanner.nextLine());
+                        if (distributore <= 0 || distributore > listaDistributori.size())
+                            throw new InvalidInputException();
                         for (int i = 1; i <= listaDistributori.size(); i++) {
                             if (distributore == i)
                                 bd.save(new Biglietto(listaDistributori.get(i - 1), tessera));
@@ -186,6 +188,8 @@ public class Application {
                         System.out.println("Digita il numero corrispondente");
                         try {
                             int distributore = Integer.parseInt(scanner.nextLine());
+                            if (distributore <= 0 || distributore > listaDistributori.size())
+                                throw new InvalidInputException();
                             System.out.println("Mensile o settimanale?");
                             System.out.println("1. Mensile (50$)");
                             System.out.println("2. settimanale (17$)");
@@ -239,7 +243,7 @@ public class Application {
     private static UUID viaggia(Scanner scanner, TrattaDAO trd, ViaggiDAO vd) {
         Random rand = new Random();
         System.out.println("Dove vuoi andare?");
-        System.out.println("Elenco distributori disponibili:");
+        System.out.println("Elenco destinazioni disponibili:");
         List<Tratta> listaTratte = trd.getAllTratte();
         for (int i = 0; i < listaTratte.size(); i++) {
             System.out.println(i + 1 + ". " + listaTratte.get(i).getCapolinea());
@@ -249,6 +253,8 @@ public class Application {
         UUID viaggioId = null;
         try {
             int tratta = Integer.parseInt(scanner.nextLine());
+            if (tratta <= 0 || tratta > listaTratte.size())
+                throw new InvalidInputException();
             for (int i = 1; i <= listaTratte.size(); i++) {
                 if (tratta == i) {
                     Viaggio viaggio = new Viaggio(listaTratte.get(i - 1).getMezzi().getFirst(), LocalDate.now(), rand.nextInt(listaTratte.get(i - 1).getTempoPrevisto() - 10, listaTratte.get(i - 1).getTempoPrevisto() + 10));
@@ -309,6 +315,8 @@ public class Application {
                         System.out.println("Digita il numero corrispondente");
                         try {
                             int distributore = Integer.parseInt(scanner.nextLine());
+                            if (distributore <= 0 || distributore > listaDistributori.size())
+                                throw new InvalidInputException();
                             for (int i = 1; i <= listaDistributori.size(); i++) {
                                 if (distributore == i)
                                     System.out.println("Il numero di biglietti emessi dal distributore " + listaDistributori.get(i - 1).getNome() + " è: " + bd.contaBigliettiPerDistributore(listaDistributori.get(i - 1).getId()));
@@ -335,12 +343,20 @@ public class Application {
                         break;
                     }
                     case "5": {
-                        System.out.println("Inserisci l'id del mezzo");
-                        try {
-                            String mezzoId = scanner.nextLine();
-                            System.out.println("Il numero di biglietti vidimati sul mezzo con id " + mezzoId + " è: " + bd.contaVidimazioniSuMezzo(UUID.fromString(mezzoId)));
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("Id non valido");
+                        System.out.println("Seleziona il mezzo");
+
+                        System.out.println("Elenco mezzi disponibili:");
+                        List<Mezzo> listaMezzi = md.getAllMezzi();
+                        for (int i = 0; i < listaMezzi.size(); i++) {
+                            System.out.println(i + 1 + ". Tipo: " + listaMezzi.get(i).getTipoMezzo() + " Stato attuale: " + listaMezzi.get(i).getStatoMezzo() + " id: " + listaMezzi.get(i).getId());
+                        }
+                        System.out.println("Digita il numero corrispondente");
+                        int mezzo = Integer.parseInt(scanner.nextLine());
+                        if (mezzo <= 0 || mezzo > listaMezzi.size()) throw new InvalidInputException();
+                        for (int i = 1; i <= listaMezzi.size(); i++) {
+                            if (mezzo == i) {
+                                System.out.println("Il numero di biglietti vidimati sul mezzo con id " + listaMezzi.get(i - 1).getId() + " è: " + bd.contaVidimazioniSuMezzo(listaMezzi.get(i - 1).getId()));
+                            }
                         }
                         break;
                     }
@@ -357,22 +373,38 @@ public class Application {
                         break;
                     }
                     case "7": {
-                        System.out.println("Inserisci l'id del mezzo");
-                        try {
-                            String mezzoId = scanner.nextLine();
-                            System.out.println("Il numero di viaggi del mezzo " + mezzoId + " è: " + vd.contaViaggiPerMezzo(UUID.fromString(mezzoId)));
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("Id non valido");
+                        System.out.println("Seleziona il mezzo");
+
+                        System.out.println("Elenco mezzi disponibili:");
+                        List<Mezzo> listaMezzi = md.getAllMezzi();
+                        for (int i = 0; i < listaMezzi.size(); i++) {
+                            System.out.println(i + 1 + ". Tipo: " + listaMezzi.get(i).getTipoMezzo() + " Stato attuale: " + listaMezzi.get(i).getStatoMezzo() + " id: " + listaMezzi.get(i).getId());
+                        }
+                        System.out.println("Digita il numero corrispondente");
+                        int mezzo = Integer.parseInt(scanner.nextLine());
+                        if (mezzo <= 0 || mezzo > listaMezzi.size()) throw new InvalidInputException();
+                        for (int i = 1; i <= listaMezzi.size(); i++) {
+                            if (mezzo == i) {
+                                System.out.println("Il numero di viaggi del mezzo " + listaMezzi.get(i - 1).getId() + " è: " + vd.contaViaggiPerMezzo(listaMezzi.get(i - 1).getId()));
+                            }
                         }
                         break;
                     }
                     case "8": {
-                        System.out.println("Inserisci l'id del mezzo");
-                        try {
-                            String mezzoId = scanner.nextLine();
-                            System.out.println("La media dei viaggi effettivi del mezzo " + mezzoId + " è: " + vd.calcolaTempoMedio(UUID.fromString(mezzoId)));
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("Id non valido");
+                        System.out.println("Seleziona il mezzo");
+
+                        System.out.println("Elenco mezzi disponibili:");
+                        List<Mezzo> listaMezzi = md.getAllMezzi();
+                        for (int i = 0; i < listaMezzi.size(); i++) {
+                            System.out.println(i + 1 + ". Tipo: " + listaMezzi.get(i).getTipoMezzo() + " Stato attuale: " + listaMezzi.get(i).getStatoMezzo() + " id: " + listaMezzi.get(i).getId());
+                        }
+                        System.out.println("Digita il numero corrispondente");
+                        int mezzo = Integer.parseInt(scanner.nextLine());
+                        if (mezzo <= 0 || mezzo > listaMezzi.size()) throw new InvalidInputException();
+                        for (int i = 1; i <= listaMezzi.size(); i++) {
+                            if (mezzo == i) {
+                                System.out.println("La media del tempo effettivo di percorrenza del mezzo è " + vd.calcolaTempoMedio(listaMezzi.get(i - 1).getId()));
+                            }
                         }
                         break;
                     }
@@ -406,6 +438,36 @@ public class Application {
                             if (mezzo == i) {
                                 mand.save(new Manutenzione(tipoStatoMezzo, motivo, listaMezzi.get(i - 1)));
                                 em.refresh(listaMezzi.get(i - 1));
+                            }
+                        }
+                        break;
+                    }
+                    case "11": {
+                        System.out.println("Elenco distributori disponibili:");
+                        List<Distributore> listaDistributori = dd.getAllDistributors();
+                        for (int i = 0; i < listaDistributori.size(); i++) {
+                            System.out.println(i + 1 + ". " + listaDistributori.get(i).getNome() + " Stato: " + listaDistributori.get(i).getStato());
+                        }
+                        System.out.println("Digita il numero corrispondente");
+
+                        int distributore = Integer.parseInt(scanner.nextLine());
+                        if (distributore <= 0 || distributore > listaDistributori.size())
+                            throw new InvalidInputException();
+
+                        System.out.println("Seleziona lo stato del mezzo");
+                        System.out.println("1. ATTIVO");
+                        System.out.println("2. FUORI SERVIZIO");
+                        System.out.println("Digita il numero corrispondente");
+                        StatoDistributore tipoStatoDistributore = StatoDistributore.ATTIVO;
+                        String inputStatoDistributore = scanner.nextLine();
+                        if (Objects.equals(inputStatoDistributore, "2"))
+                            tipoStatoDistributore = StatoDistributore.FUORI_SERVIZIO;
+                        if (!Objects.equals(inputStatoDistributore, "1") && !Objects.equals(inputStatoDistributore, "2"))
+                            throw new InvalidInputException();
+                        for (int i = 1; i <= listaDistributori.size(); i++) {
+                            if (distributore == i) {
+                                dd.updateStatoDistributore(listaDistributori.get(i - 1).getId(), tipoStatoDistributore);
+                                em.refresh(listaDistributori.get(i - 1));
                             }
                         }
                         break;
@@ -451,7 +513,9 @@ public class Application {
                             tipoDistributore = TipoDistributore.RIVENDITORE_AUTORIZZATO;
                         if (!Objects.equals(inputTipoDistributore, "1") && !Objects.equals(inputTipoDistributore, "2"))
                             throw new InvalidInputException();
-                        dd.saveDistributore(new Distributore(nome, tipoDistributore, StatoDistributore.ATTIVO));
+                        if (tipoDistributore == TipoDistributore.DISTRIBUTORE_AUTOMATICO)
+                            dd.saveDistributore(new Distributore(nome, tipoDistributore, StatoDistributore.ATTIVO));
+                        else dd.saveDistributore(new Distributore(nome, tipoDistributore, null));
                         break;
                     }
                     case "2": {
@@ -501,6 +565,8 @@ public class Application {
                         }
                         System.out.println("Digita il numero corrispondente");
                         int tratta = Integer.parseInt(scanner.nextLine());
+                        if (tratta <= 0 || tratta > listaTratte.size())
+                            throw new InvalidInputException();
                         for (int i = 1; i <= listaTratte.size(); i++) {
                             if (tratta == i)
                                 md.save(new Mezzo(tipoMezzo, listaTratte.get(i - 1)));

@@ -56,13 +56,16 @@ public class DistributoriDAO {
     }
 
     public void updateStatoDistributore(UUID id, StatoDistributore nuovoStato) {
-        Distributore distributore = getDistributoreById(id);
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
-        distributore.setStato(nuovoStato);
-        em.merge(distributore);
-        transaction.commit();
-        System.out.println("Stato del distributore aggiornato con successo!");
+        if (getDistributoreById(id).getStato() == nuovoStato) System.out.println("Distributore già " + nuovoStato);
+        else {
+            Distributore distributore = getDistributoreById(id);
+            EntityTransaction transaction = em.getTransaction();
+            transaction.begin();
+            distributore.setStato(nuovoStato);
+            em.merge(distributore);
+            transaction.commit();
+            System.out.println("Stato del distributore aggiornato con successo!");
+        }
     }
 
     public List<Distributore> getAllActiveDistributors() {
