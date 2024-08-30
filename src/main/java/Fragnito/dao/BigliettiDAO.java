@@ -25,7 +25,6 @@ public class BigliettiDAO {
         transaction.begin();
         em.persist(timbrabile);
         transaction.commit();
-        System.out.println("Biglietto / abbonamento erogato con successo!");
     }
 
     public Biglietto getBigliettoById(UUID id) {

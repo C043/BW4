@@ -32,8 +32,8 @@ public class Application {
         BigliettiDAO bd = new BigliettiDAO(em);
         ViaggiDAO vd = new ViaggiDAO(em);
 
-        trd.generateNTratte(50);
-        dd.generateNDistributors(50);
+        /*trd.generateNTratte(10);
+        dd.generateNDistributors(10);*/
 
 
         boolean appOff = false;
@@ -168,8 +168,10 @@ public class Application {
                         if (distributore <= 0 || distributore > listaDistributori.size())
                             throw new InvalidInputException();
                         for (int i = 1; i <= listaDistributori.size(); i++) {
-                            if (distributore == i)
+                            if (distributore == i) {
                                 bd.save(new Biglietto(listaDistributori.get(i - 1), tessera));
+                                System.out.println("Biglietto emesso con successo");
+                            }
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Input non valido, inserisci il numero corrispondente");
@@ -200,8 +202,10 @@ public class Application {
                             else if (!Objects.equals(periodicita, "1") && !Objects.equals(periodicita, "2"))
                                 throw new InvalidInputException();
                             for (int i = 1; i <= listaDistributori.size(); i++) {
-                                if (distributore == i)
+                                if (distributore == i) {
                                     bd.save(new Abbonamento(listaDistributori.get(i - 1), tessera, periodo));
+                                    System.out.println("Abbonamento emesso con successo");
+                                }
                             }
                         } catch (NumberFormatException | InvalidInputException e) {
                             System.out.println("Input non valido, inserisci il numero corrispondente");

@@ -36,7 +36,6 @@ public class TrattaDAO {
 
     public void generateNTratte(int n) {
         Faker faker = new Faker();
-        EntityTransaction transaction = em.getTransaction();
         for (int i = 0; i < n; i++) {
             save(new Tratta(faker.gameOfThrones().city(), faker.lordOfTheRings().location(), faker.random().nextInt(30, 120)));
         }

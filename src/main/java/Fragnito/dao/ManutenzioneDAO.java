@@ -28,10 +28,12 @@ public class ManutenzioneDAO {
                 transaction.commit();
                 if (manutenzione.getStato() == StatoMezzo.IN_MANUTENZIONE) {
                     md.filterMezziAndUpdate(manutenzione.getMezzo().getId(), StatoMezzo.IN_MANUTENZIONE);
+                    System.out.println("Manutenzione n. " + manutenzione.getId() + " aggiunta con successo!");
                 } else {
                     md.filterMezziAndUpdate(manutenzione.getMezzo().getId(), StatoMezzo.IN_SERVIZIO);
+                    System.out.println("In servizio n. " + manutenzione.getId() + " aggiunta con successo!");
+
                 }
-                System.out.println("Manutenzione n. " + manutenzione.getId() + " aggiunta con successo!");
             } else if (md.findById(manutenzione.getMezzo().getId()).getStatoMezzo() == manutenzione.getStato())
                 System.out.println("Mezzo già " + manutenzione.getStato());
             else {
@@ -42,10 +44,11 @@ public class ManutenzioneDAO {
                 transaction.commit();
                 if (manutenzione.getStato() == StatoMezzo.IN_MANUTENZIONE) {
                     md.filterMezziAndUpdate(manutenzione.getMezzo().getId(), StatoMezzo.IN_MANUTENZIONE);
+                    System.out.println("Manutenzione n. " + manutenzione.getId() + " aggiunta con successo!");
                 } else {
                     md.filterMezziAndUpdate(manutenzione.getMezzo().getId(), StatoMezzo.IN_SERVIZIO);
+                    System.out.println("In servizio n. " + manutenzione.getId() + " aggiunta con successo!");
                 }
-                System.out.println("Manutenzione n. " + manutenzione.getId() + " aggiunta con successo!");
             }
         } catch (TransactionalException te) {
             System.err.println(te.getMessage());
