@@ -32,8 +32,8 @@ public class Application {
         BigliettiDAO bd = new BigliettiDAO(em);
         ViaggiDAO vd = new ViaggiDAO(em);
 
-        /*trd.generateNTratte(5);
-        dd.generateNDistributors(5);*/
+        trd.generateNTratte(50);
+        dd.generateNDistributors(50);
 
 
         boolean appOff = false;
