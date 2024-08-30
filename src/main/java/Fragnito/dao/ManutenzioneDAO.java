@@ -8,6 +8,7 @@ import jakarta.persistence.Query;
 import jakarta.transaction.TransactionalException;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 public class ManutenzioneDAO {
@@ -20,7 +21,18 @@ public class ManutenzioneDAO {
     public void save(Manutenzione manutenzione) {
         MezziDAO md = new MezziDAO(em);
         try {
-            if (manutenzione.getMezzo().getStatoMezzo() == manutenzione.getStato())
+            if (Objects.equals(manutenzione.getMotivo(), "Inizio")) {
+                EntityTransaction transaction = em.getTransaction();
+                transaction.begin();
+                em.persist(manutenzione);
+                transaction.commit();
+                if (manutenzione.getStato() == StatoMezzo.IN_MANUTENZIONE) {
+                    md.filterMezziAndUpdate(manutenzione.getMezzo().getId(), StatoMezzo.IN_MANUTENZIONE);
+                } else {
+                    md.filterMezziAndUpdate(manutenzione.getMezzo().getId(), StatoMezzo.IN_SERVIZIO);
+                }
+                System.out.println("Manutenzione n. " + manutenzione.getId() + " aggiunta con successo!");
+            } else if (md.findById(manutenzione.getMezzo().getId()).getStatoMezzo() == manutenzione.getStato())
                 System.out.println("Mezzo già " + manutenzione.getStato());
             else {
                 updateEndTime(manutenzione.getMezzo().getId());
@@ -29,10 +41,8 @@ public class ManutenzioneDAO {
                 em.persist(manutenzione);
                 transaction.commit();
                 if (manutenzione.getStato() == StatoMezzo.IN_MANUTENZIONE) {
-                    System.out.println("Cambio in manutenzione");
                     md.filterMezziAndUpdate(manutenzione.getMezzo().getId(), StatoMezzo.IN_MANUTENZIONE);
                 } else {
-                    System.out.println("Cambio in servizio");
                     md.filterMezziAndUpdate(manutenzione.getMezzo().getId(), StatoMezzo.IN_SERVIZIO);
                 }
                 System.out.println("Manutenzione n. " + manutenzione.getId() + " aggiunta con successo!");

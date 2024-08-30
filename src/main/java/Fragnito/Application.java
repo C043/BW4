@@ -2,10 +2,7 @@ package Fragnito;
 
 import Fragnito.dao.*;
 import Fragnito.entities.*;
-import Fragnito.enumClass.PeriodoAbbonamento;
-import Fragnito.enumClass.StatoDistributore;
-import Fragnito.enumClass.TipoDistributore;
-import Fragnito.enumClass.TipoMezzo;
+import Fragnito.enumClass.*;
 import Fragnito.exceptions.EmailAlreadyExistException;
 import Fragnito.exceptions.InvalidInputException;
 import jakarta.persistence.EntityManager;
@@ -54,7 +51,7 @@ public class Application {
                     System.out.println("Login:");
                     System.out.println("Inserisci la tua email");
                     String email = scanner.nextLine();
-                    if (Objects.equals(email, "mellon")) adminMenu(scanner, bd, dd, vd, trd, md, ud);
+                    if (Objects.equals(email, "mellon")) adminMenu(scanner, bd, dd, vd, trd, md, ud, mand, em);
                     else {
                         System.out.println("Inserisci la tua password");
                         String password = scanner.nextLine();
@@ -265,7 +262,7 @@ public class Application {
         return viaggioId;
     }
 
-    private static void adminMenu(Scanner scanner, BigliettiDAO bd, DistributoriDAO dd, ViaggiDAO vd, TrattaDAO trd, MezziDAO md, UtenteDAO ud) {
+    private static void adminMenu(Scanner scanner, BigliettiDAO bd, DistributoriDAO dd, ViaggiDAO vd, TrattaDAO trd, MezziDAO md, UtenteDAO ud, ManutenzioneDAO mand, EntityManager em) {
         boolean quitAdmin = false;
         while (!quitAdmin) {
             System.out.println("Benvenuto admin");
@@ -279,7 +276,9 @@ public class Application {
             System.out.println("7. Visualizza il numero di viaggi di un mezzo");
             System.out.println("8. Calcola il tempo medio effettivo di percorrenza di un mezzo");
             System.out.println("9. Crea un'entità");
-            System.out.println("10. Esci");
+            System.out.println("10. Modifica lo stato di un mezzo");
+            System.out.println("11. Modifica lo stato di un distributore");
+            System.out.println("12. Esci");
             System.out.println("Digita il numero corrispondente");
             String opzione = scanner.nextLine();
             try {
@@ -382,6 +381,36 @@ public class Application {
                         break;
                     }
                     case "10": {
+                        System.out.println("Seleziona il mezzo da modificare");
+                        System.out.println("Elenco mezzi disponibili:");
+                        List<Mezzo> listaMezzi = md.getAllMezzi();
+                        for (int i = 0; i < listaMezzi.size(); i++) {
+                            System.out.println(i + 1 + ". Tipo: " + listaMezzi.get(i).getTipoMezzo() + " Stato attuale: " + listaMezzi.get(i).getStatoMezzo() + " id: " + listaMezzi.get(i).getId());
+                        }
+                        System.out.println("Digita il numero corrispondente");
+                        int mezzo = Integer.parseInt(scanner.nextLine());
+                        if (mezzo <= 0 || mezzo > listaMezzi.size()) throw new InvalidInputException();
+                        System.out.println("Seleziona lo stato del mezzo");
+                        System.out.println("1. IN MANUTENZIONE");
+                        System.out.println("2. IN SERVIZIO");
+                        System.out.println("Digita il numero corrispondente");
+                        StatoMezzo tipoStatoMezzo = StatoMezzo.IN_MANUTENZIONE;
+                        String inputStatoMezzo = scanner.nextLine();
+                        if (Objects.equals(inputStatoMezzo, "2"))
+                            tipoStatoMezzo = StatoMezzo.IN_SERVIZIO;
+                        if (!Objects.equals(inputStatoMezzo, "1") && !Objects.equals(inputStatoMezzo, "2"))
+                            throw new InvalidInputException();
+                        System.out.println("Digita il motivo del cambio di stato mezzo");
+                        String motivo = scanner.nextLine();
+                        for (int i = 1; i <= listaMezzi.size(); i++) {
+                            if (mezzo == i) {
+                                mand.save(new Manutenzione(tipoStatoMezzo, motivo, listaMezzi.get(i - 1)));
+                                em.refresh(listaMezzi.get(i - 1));
+                            }
+                        }
+                        break;
+                    }
+                    case "12": {
                         System.out.println("Arrivederci admin!");
                         quitAdmin = true;
                         break;
@@ -390,7 +419,7 @@ public class Application {
                         throw new InvalidInputException();
                     }
                 }
-            } catch (InvalidInputException e) {
+            } catch (InvalidInputException | NumberFormatException e) {
                 System.out.println("Input non valido, inserisci il numero corrispondente");
             }
         }
@@ -417,10 +446,10 @@ public class Application {
                         System.out.println("2. RIVENDITORE AUTORIZZATO");
                         System.out.println("Digita il numero corrispondente");
                         TipoDistributore tipoDistributore = TipoDistributore.DISTRIBUTORE_AUTOMATICO;
-                        String inputTipoMezzo = scanner.nextLine();
-                        if (Objects.equals(inputTipoMezzo, "2"))
+                        String inputTipoDistributore = scanner.nextLine();
+                        if (Objects.equals(inputTipoDistributore, "2"))
                             tipoDistributore = TipoDistributore.RIVENDITORE_AUTORIZZATO;
-                        if (!Objects.equals(inputTipoMezzo, "1") && !Objects.equals(inputTipoMezzo, "2"))
+                        if (!Objects.equals(inputTipoDistributore, "1") && !Objects.equals(inputTipoDistributore, "2"))
                             throw new InvalidInputException();
                         dd.saveDistributore(new Distributore(nome, tipoDistributore, StatoDistributore.ATTIVO));
                         break;
@@ -495,47 +524,6 @@ public class Application {
                     default: {
                         throw new InvalidInputException();
                     }
-                }
-            } catch (InvalidInputException | NumberFormatException e) {
-                System.out.println("Input non valido, inserisci il numero corrispondente");
-            }
-        }
-    }
-
-    public static void deleteMenu(Scanner scanner, TrattaDAO trd, MezziDAO md, UtenteDAO ud, DistributoriDAO dd) {
-        boolean quitDelete = false;
-        while (!quitDelete) {
-            System.out.println("Quale entità vuoi creare?");
-            System.out.println("1. Distributore");
-            System.out.println("2. Utente");
-            System.out.println("3. Mezzo");
-            System.out.println("4. Tratta");
-            System.out.println("5. esci");
-            System.out.println("Digita il numero corrispondente");
-            String opzione = scanner.nextLine();
-            try {
-                switch (opzione) {
-                    case "4": {
-                        System.out.println("Seleziona la tratta da eliminare");
-                        System.out.println("Elenco tratte disponibili:");
-                        List<Tratta> listaTratte = trd.getAllTratte();
-                        for (int i = 0; i < listaTratte.size(); i++) {
-                            System.out.println(i + 1 + ". Partenza: " + listaTratte.get(i).getPartenza() + " Capolinea: " + listaTratte.get(i).getCapolinea());
-                        }
-                        System.out.println("Digita il numero corrispondente");
-                        int tratta = Integer.parseInt(scanner.nextLine());
-                        for (int i = 1; i <= listaTratte.size(); i++) {
-                            if (tratta == i)
-                                trd.deleteById(listaTratte.get(i - 1).getId());
-                        }
-                        break;
-                    }
-                    case "5": {
-                        quitDelete = true;
-                        break;
-                    }
-                    default:
-                        throw new InvalidInputException();
                 }
             } catch (InvalidInputException | NumberFormatException e) {
                 System.out.println("Input non valido, inserisci il numero corrispondente");
