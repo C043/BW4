@@ -65,9 +65,14 @@ public class DistributoriDAO {
         System.out.println("Stato del distributore aggiornato con successo!");
     }
 
-    public List<Distributore> getAllDistributors() {
+    public List<Distributore> getAllActiveDistributors() {
         return em.createQuery("SELECT d FROM Distributore d WHERE d.stato = :stato OR d.stato IS NULL", Distributore.class)
                 .setParameter("stato", StatoDistributore.ATTIVO)
+                .getResultList();
+    }
+
+    public List<Distributore> getAllDistributors() {
+        return em.createQuery("SELECT d FROM Distributore d WHERE d.stato IS NOT NULL", Distributore.class)
                 .getResultList();
     }
 }

@@ -161,7 +161,7 @@ public class Application {
             switch (opzione) {
                 case "1": {
                     System.out.println("Elenco distributori disponibili:");
-                    List<Distributore> listaDistributori = dd.getAllDistributors();
+                    List<Distributore> listaDistributori = dd.getAllActiveDistributors();
                     for (int i = 0; i < listaDistributori.size(); i++) {
                         System.out.println(i + 1 + ". " + listaDistributori.get(i).getNome());
                     }
@@ -182,7 +182,7 @@ public class Application {
                         System.out.println("Abbonamento già presente");
                     else {
                         System.out.println("Elenco distributori disponibili:");
-                        List<Distributore> listaDistributori = dd.getAllDistributors();
+                        List<Distributore> listaDistributori = dd.getAllActiveDistributors();
                         for (int i = 0; i < listaDistributori.size(); i++) {
                             System.out.println(i + 1 + ". " + listaDistributori.get(i).getNome());
                         }
@@ -303,7 +303,7 @@ public class Application {
                     }
                     case "3": {
                         System.out.println("Elenco distributori disponibili:");
-                        List<Distributore> listaDistributori = dd.getAllDistributors();
+                        List<Distributore> listaDistributori = dd.getAllActiveDistributors();
                         for (int i = 0; i < listaDistributori.size(); i++) {
                             System.out.println(i + 1 + ". " + listaDistributori.get(i).getNome());
                         }

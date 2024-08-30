@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.transaction.TransactionalException;
 
+import java.util.List;
 import java.util.UUID;
 
 public class MezziDAO {
@@ -55,5 +56,10 @@ public class MezziDAO {
         em.createQuery("UPDATE Mezzo m SET m.statoMezzo = :stato WHERE m.id = :id").setParameter("stato", statoMezzo).setParameter("id", id).executeUpdate();
         transaction.commit();
         System.out.println("Modifica avvenuta con successo!");
+    }
+
+    public List<Mezzo> getAllMezzi() {
+        return em.createQuery("SELECT m FROM Mezzo m", Mezzo.class)
+                .getResultList();
     }
 }
